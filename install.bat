@@ -16,3 +16,5 @@ if not exist "venv\" (
   pip install virtualenv
   virtualenv venv
 )
+
+rem venve\Scripts\python.exe app.py
