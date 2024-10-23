@@ -17,4 +17,7 @@ if not exist "venv\" (
   virtualenv venv
 )
 
-rem venve\Scripts\python.exe app.py
+rem Make sure the Python module requirements are installed in the venv.
+venv\Scripts\pip.exe install flask
+
+rem venv\Scripts\python.exe app.py
