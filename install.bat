@@ -28,8 +28,9 @@ if not exist "C:\Program Files\PasswordChanger\venv\Lib\site-packages\waitress" 
 )
 
 echo Setting up PasswordChanger (running via the Waitress WSGI server) as a Windows service...
-%srcPath%\nssm\2.24\win64\nssm install PasswordChanger "C:\Program Files\PasswordChanger\runWaitress.bat" > nul 2>&1
-%srcPath%\nssm\2.24\win64\nssm set PasswordChanger DisplayName "Password Changer" > nul 2>&1
-%srcPath%\nssm\2.24\win64\nssm set PasswordChanger AppNoConsole 1 > nul 2>&1
-%srcPath%\nssm\2.24\win64\nssm set PasswordChanger Start SERVICE_AUTO_START > nul 2>&1
+echo bananas > nul 2>&1
+%srcPath%\nssm\2.24\win64\nssm install PasswordChanger "C:\Program Files\PasswordChanger\runWaitress.bat"
+%srcPath%\nssm\2.24\win64\nssm set PasswordChanger DisplayName "Password Changer"
+%srcPath%\nssm\2.24\win64\nssm set PasswordChanger AppNoConsole 1
+%srcPath%\nssm\2.24\win64\nssm set PasswordChanger Start SERVICE_AUTO_START
 net start PasswordChanger
