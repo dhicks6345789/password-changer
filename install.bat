@@ -1,7 +1,7 @@
 @echo off
 echo Installing...
 
-if exist "C:\Program Files\PasswordChanger\" (
+if not exist "C:\Program Files\PasswordChanger\" (
   mkdir "C:\Program Files\PasswordChanger"
 )
 
