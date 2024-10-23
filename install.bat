@@ -12,7 +12,7 @@ xcopy /s /y templates "C:\Program Files\PasswordChanger\templates"
 
 rem Change to the application folder.
 cd "C:\Program Files\PasswordChanger"
-set srcFolder=%cd%
+set srcPath=%cd%
 
 rem Make sure the Python Virtual Environment (venv) exists.
 if not exist "venv\" (
