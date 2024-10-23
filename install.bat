@@ -20,5 +20,6 @@ if not exist "venv\" (
 
 rem Make sure the Python module requirements are installed in the venv.
 venv\Scripts\pip.exe install flask
+venv\Scripts\pip.exe install waitress
 
 rem venv\Scripts\python.exe app.py
