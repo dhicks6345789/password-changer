@@ -4,7 +4,7 @@ app = flask.Flask(__name__)
 
 app_data = {
   "name": "Password Changer",
-  "description": "A utility for changing your account password.",
+  "description": "A utility for changing your account password",
   "author": "David Hicks",
   "html_title": "Password Changer",
   "project_name": "Password Changer",
