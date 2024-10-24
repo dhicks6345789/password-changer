@@ -21,7 +21,7 @@ def generateLoginToken(userData):
 # Instantiate the Flask app, set configuration values.
 app = flask.Flask(__name__)
 app.config.from_mapping({
-    # Set values for the Flask-Caching module.
+    # Set values for the Flask-Caching module. Value timeout (i.e. timeout for user sessions with no activity) is 10 minutes.
     "CACHE_TYPE": "FileSystemCache",
     "CACHE_DEFAULT_TIMEOUT": 600,
     "CACHE_DIR": "cache"
@@ -29,10 +29,9 @@ app.config.from_mapping({
 # Instantiate the cache object.
 loginTokenCache = flask_caching.Cache(app)
 
+# Open and read client_secret.json containing the Google authentication client secrets.
 configError = ""
 clientSecretData = {"web":{"client_id":""}}
-
-# Open and read client_secret.json containing the Google authentication client secrets.
 try:
   clientSecretFile = open("client_secret.json")
 except OSError:
@@ -50,10 +49,12 @@ appData = {
   "GoogleClientID":clientSecretData["web"]["client_id"]
 }
 
+# This is a single-page app, any user interface changes are made via calls to the API.
 @app.route("/")
 def index():
   return flask.render_template("index.html", appData=appData)
 
+# When the user completes the "Sign In With Google" workflow on the client side, this function gets called to confirm they have a valid login.
 @app.route("/api/verifyGoogleIDToken", methods=["POST"])
 def verifyGoogleIDToken():
   googleIDToken = flask.request.values.get("googleIDToken", None)
@@ -74,6 +75,15 @@ def verifyGoogleIDToken():
   # At this point, we've verified the Google login token. Generate and cache a login token for our client-side code to use.
   loginToken = generateLoginToken({"emailAddress":IDInfo["email"], "loginType":"google"})
   return loginToken
-  
+
+@app.route("/api/setPassword", methods=["POST"])
+def getAdditionalUsers():
+  return "[]"
+
+@app.route("/api/setPassword", methods=["POST"])
+def setPassword():
+  newPassword = flask.request.values.get("newPassword", None)
+  return "Setting new password: " + newPassword
+
 if __name__ == "__main__":
   app.run(debug=True, port=8070)
