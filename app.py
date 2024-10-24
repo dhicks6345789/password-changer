@@ -48,7 +48,7 @@ if os.path.isdir("groups"):
         groups[groupName] = []
         groupFile = open("groups" + os.sep + group)
         for groupLine in groupFile.readlines():
-            groups[groupName].append(groupline.strip())
+            groups[groupName].append(groupLine.strip())
         permissionsFile.close()
 print("Groups")
 print(groups)
