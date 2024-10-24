@@ -1,6 +1,16 @@
 import flask
+import json
 
 app = flask.Flask(__name__)
+configError = ""
+
+# Open and read client_secret.json containing the Google authentication client secrets.
+try:
+  clientSecretFile = open("client_secret.json")
+except OSError:
+  configError = "ERROR: Could not load client_secret.json."
+clientSecretData = json.load(clientSecretFile)
+clientSecretFile.close()
 
 app_data = {
   "name": "Password Changer",
@@ -13,7 +23,10 @@ app_data = {
 
 @app.route("/")
 def index():
-  return flask.render_template("index.html", app_data=app_data)
+  if configError = "":
+    return flask.render_template("index.html", app_data=app_data)
+  else:
+    return flask.render_template("error.html", app_data=app_data)
   
 if __name__ == "__main__":
   app.run()
