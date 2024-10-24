@@ -76,14 +76,16 @@ def verifyGoogleIDToken():
   loginToken = generateLoginToken({"emailAddress":IDInfo["email"], "loginType":"google"})
   return loginToken
 
+# Return a list of additional users, if any, the current user can set the passwords of.
 @app.route("/api/setPassword", methods=["POST"])
 def getAdditionalUsers():
   return "[]"
 
-@app.route("/api/setPassword", methods=["POST"])
-def setPassword():
+# Set the user's own new password.
+@app.route("/api/setOwnPassword", methods=["POST"])
+def setOwnPassword():
   newPassword = flask.request.values.get("newPassword", None)
-  return "Setting new password: " + newPassword
+  return "Setting own new password: " + newPassword
 
 if __name__ == "__main__":
   app.run(debug=True, port=8070)
