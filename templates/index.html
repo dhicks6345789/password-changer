@@ -54,6 +54,7 @@
 
       // A function to display an error message for the end user.
       function showErrorMessage(theErrorMessage) {
+        console.log("Showing error");
         document.getElementById("googleLoginBlock").style.display = "none";
         document.getElementById("errorMessageBlock").style.display = "block";
         document.getElementById("errorMessageText").innerHTML = theErrorMessage;
@@ -70,6 +71,7 @@
   </head>
   <body onload="doPageLoad()">
     <main role="main" class="container">
+      <div style="display:none;">Bananas!</div>
       <div id="errorMessageBlock" class="d-flex flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
         <h1>ERROR:</h1>
         <h2 id="errorMessageText"></h2>
