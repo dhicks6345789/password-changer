@@ -9,24 +9,21 @@ try:
   clientSecretFile = open("client_secret.json")
 except OSError:
   configError = "ERROR: Could not load client_secret.json."
-clientSecretData = json.load(clientSecretFile)
-clientSecretFile.close()
+else:
+  clientSecretData = json.load(clientSecretFile)
+  clientSecretFile.close()
 
-app_data = {
+appData = {
   "name": "Password Changer",
-  "description": "A utility for changing your account password",
-  "author": "David Hicks",
-  "html_title": "Password Changer",
-  "project_name": "Password Changer",
-  "keywords": "flask, webapp, template, basic"
+  "Google": secret
 }
 
 @app.route("/")
 def index():
   if configError = "":
-    return flask.render_template("index.html", app_data=app_data)
+    return flask.render_template("index.html", appData=appData)
   else:
-    return flask.render_template("error.html", app_data=app_data)
+    return flask.render_template("error.html", errorMessage=configError)
   
 if __name__ == "__main__":
   app.run()
