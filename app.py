@@ -94,7 +94,7 @@ def verifyGoogleIDToken():
   return loginToken
 
 # Return a list of additional users, if any, the current user can set the passwords of.
-@app.route("/api/setPassword", methods=["POST"])
+@app.route("/api/getAdditionalUsers", methods=["POST"])
 def getAdditionalUsers():
   loginToken = flask.request.values.get("loginToken", None)
   if loginToken == None:
