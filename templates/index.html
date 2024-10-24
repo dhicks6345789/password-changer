@@ -18,7 +18,7 @@
     <script src="https://accounts.google.com/gsi/client" async></script>
 
     <script>
-      configError = "{{ appData['configError'] }}"
+      var configError = "{{ appData['configError'] }}"
       
       // A function to do an api call to the server.
       function doAPICall(theMethod, theParams, theSuccessFunction, callMethod="GET") {
