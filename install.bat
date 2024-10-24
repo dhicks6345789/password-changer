@@ -28,6 +28,13 @@ if not exist "C:\Program Files\PasswordChanger\venv\Lib\site-packages\flask" (
 if not exist "C:\Program Files\PasswordChanger\venv\Lib\site-packages\waitress" (
   venv\Scripts\pip.exe install waitress
 )
+if not exist "C:\Program Files\PasswordChanger\venv\Lib\site-packages\google" (
+  venv\Scripts\pip.exe install google-auth
+  venv\Scripts\pip.exe install google-auth-oauthlib
+  rem venv\Scripts\pip.exe install google-api-python-client
+  rem venv\Scripts\pip.exe install google-auth-httplib2
+  rem venv\Scripts\pip.exe install oauth2client
+)
 
 echo Setting up PasswordChanger (running via the Waitress WSGI server) as a Windows service...
 net stop PasswordChanger > nul 2>&1
