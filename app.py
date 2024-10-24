@@ -15,6 +15,9 @@ else:
 
 appData = {
   "name": "Password Changer",
+  "description": "A utility to change your account password.",
+  "keywords": "password, change",
+  "author": "David Hicks",
   "GoogleClientID": clientSecretData["client_id"]
 }
 
