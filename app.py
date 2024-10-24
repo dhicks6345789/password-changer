@@ -20,7 +20,7 @@ appData = {
   "description": "A utility to change your account password.",
   "keywords": "password, change",
   "author": "David Hicks",
-  "GoogleClientID": clientSecretData["client_id"]
+  "GoogleClientID": clientSecretData["web"]["client_id"]
 }
 
 @app.route("/")
