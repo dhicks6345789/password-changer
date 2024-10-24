@@ -22,12 +22,12 @@ def generateLoginToken(userData):
 app = flask.Flask(__name__)
 app.config.from_mapping({
     # Set values for the Flask-Caching module.
-    "CACHE_TYPE": "MemcachedCache",
-    "CACHE_DEFAULT_TIMEOUT": 1800
+    "CACHE_TYPE": "FileSystemCache",
+    "CACHE_DEFAULT_TIMEOUT": 1800,
+    "CACHE_DIR": "cache"
 })
 # Instantiate the cache object.
 loginTokenCache = flask_caching.Cache(app)
-emailLoginsCache = flask_caching.Cache(app)
 
 configError = ""
 clientSecretData = {"web":{"client_id":""}}
