@@ -37,7 +37,7 @@ net stop PasswordChanger > nul 2>&1
 "%srcPath%\nssm\2.24\win64\nssm.exe" set PasswordChanger Start SERVICE_AUTO_START > nul 2>&1
 net start PasswordChanger
 
-rem To test locally, do:
+rem Note: to test locally, go to a command line and do:
 rem net stop PasswordChanger
 rem cd "C:\Program Files\Password Changer"
-rem cls & venv\Scripts\python.exe app.py
+rem cls & venv\Scripts\flask.exe --app app run
