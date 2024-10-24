@@ -23,7 +23,7 @@ app = flask.Flask(__name__)
 app.config.from_mapping({
     # Set values for the Flask-Caching module.
     "CACHE_TYPE": "FileSystemCache",
-    "CACHE_DEFAULT_TIMEOUT": 1800,
+    "CACHE_DEFAULT_TIMEOUT": 600,
     "CACHE_DIR": "cache"
 })
 # Instantiate the cache object.
