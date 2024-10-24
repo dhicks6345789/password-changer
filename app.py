@@ -23,7 +23,7 @@ appData = {
 
 @app.route("/")
 def index():
-  if configError = "":
+  if configError == "":
     return flask.render_template("index.html", appData=appData)
   else:
     return flask.render_template("error.html", errorMessage=configError)
