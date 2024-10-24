@@ -63,7 +63,7 @@
             loginToken = theAPIResponse;
             doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
               print(theAPIResponse);
-            }
+            }, "POST");
           }
         }, "POST");
       }
