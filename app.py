@@ -15,7 +15,7 @@ else:
 
 appData = {
   "name": "Password Changer",
-  "Google": secret
+  "GoogleClientID": clientSecretData["client_id"]
 }
 
 @app.route("/")
