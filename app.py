@@ -9,7 +9,8 @@ clientSecretData = {"web":{"client_id":""}}
 try:
   clientSecretFile = open("client_secret.json")
 except OSError:
-  configError = "ERROR: Could not load client_secret.json."
+  configError = "Could not load file client_secret.json."
+  print(configError)
 else:
   clientSecretData = json.load(clientSecretFile)
   clientSecretFile.close()
@@ -21,6 +22,7 @@ appData = {
   "author": "David Hicks",
   "GoogleClientID": clientSecretData["web"]["client_id"]
 }
+print(appData)
 
 @app.route("/")
 def index():
