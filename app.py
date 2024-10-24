@@ -113,12 +113,16 @@ def verifyGoogleIDToken():
 def getAdditionalUsers():
   loginToken = flask.request.values.get("loginToken", None)
   if loginToken == None:
-    return("ERROR: Missing login token")
+    return("ERROR: Missing login token.")
   else:
     userData = loginTokenCache.get(loginToken)
     if userData:
       if userData["emailAddress"] in permissions.keys():
-          return permissions[userData["emailAddress"]]
+        result = {}
+        for groupName in permissions[userData["emailAddress"]].split(","):
+          for item in groups[groupName]:
+            result[item] = 1
+        return "[\"" + "\",\"".join(result.keys()) + "\"]"
   return "[]"
 
 # Set the user's own new password.
