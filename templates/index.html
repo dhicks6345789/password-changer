@@ -1,15 +1,85 @@
-{% extends 'layout.html' %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="{{ appData['description'] }}">
+    <meta name="keywords" content="{{ appData['keywords'] }}">
+    <meta name="author" content="{{ appData['author'] }}">
+    <!-- <link rel="icon" href="../../../../favicon.ico"> -->
 
-{% block body %}
+    <title>{{ appData['name'] }}</title>
 
-<div id="errorMessageBlock" class="d-flex flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
-  <h1>ERROR:</h1>
-  <h2 id="errorMessageText"></h2>
-</div>
+    <!-- Import Bootstrap 5. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <!-- Import Google's login-with-Google authentication library. -->
+    <script src="https://accounts.google.com/gsi/client" async></script>
 
-<div id="googleLoginBlock" class="d-flex flex-column align-items-center justify-content-center" style="height:100vh;">
-  <h1>{{ appData['name'] }}</h1>
-  <div id="g_id_onload" data-client_id="{{ appData['GoogleClientID'] }}" data-context="signin" data-ux_mode="popup" data-callback="handleGoogleCredentialResponse" data-auto_prompt="false"></div>
-  <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
-</div>
-{% endblock %}
+    <script>
+      configError = "{{ appData['configError'] }}"
+      
+      // A function to do an api call to the server.
+      function doAPICall(theMethod, theParams, theSuccessFunction, callMethod="GET") {
+        var apiCall = new XMLHttpRequest();
+        apiCall.onreadystatechange = function() {
+          if (apiCall.readyState == 4 && apiCall.status == 200) {
+            theSuccessFunction(apiCall.responseText);
+          }
+        }
+        URLEncodedParams = "";
+        for (const [paramKey, paramValue] of Object.entries(theParams)) {
+          URLEncodedParams = URLEncodedParams + encodeURIComponent(paramKey) + "=" + encodeURIComponent(paramValue) + "&";
+        }
+        URLEncodedParams = URLEncodedParams.slice(0, -1);        
+        if (callMethod == "GET") {
+          apiCall.open("GET", "/api/" + theMethod + "?" + URLEncodedParams, true);
+          apiCall.send();
+        } else {
+          apiCall.open("POST", "/api/" + theMethod, true);
+          apiCall.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          apiCall.send(URLEncodedParams);
+        }
+      }
+
+      // A function called when the user completes the "Login With Google" workflow. That gives us a credntial token which we then need to send back
+      // to our server via an API call to validate. If valid, we'll receive a login token, otherwise we'll receive an error message.
+      function handleGoogleCredentialResponse(theGoogleResponse) {
+        doAPICall("verifyGoogleIDToken", {"googleIDToken":theGoogleResponse.credential}, function(theAPIResponse) {
+          if (theAPIResponse.startsWith("Error")) {
+            console.log("Error returned:")
+            console.log(apiResponse);
+          }
+        },"POST");
+      }
+
+      // A function to display an error message for the end user.
+      function showErrorMessage(theErrorMessage) {
+        document.getElementById("googleLoginBlock").style.display = "none";
+        document.getElementById("errorMessageBlock").style.display = "block";
+        document.getElementById("errorMessageText").innerHTML = theErrorMessage;
+      }
+      
+      // The function called when the page is fully loaded and ready to display.
+      function doPageLoad() {
+        if configError != "" {
+          showErrorMessage(configError);
+        }
+      }
+    </script>
+  </head>
+  <body onload="doPageLoad()">
+    <main role="main" class="container">
+      <div id="errorMessageBlock" class="d-flex flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
+        <h1>ERROR:</h1>
+        <h2 id="errorMessageText"></h2>
+      </div>
+      <div id="googleLoginBlock" class="d-flex flex-column align-items-center justify-content-center" style="height:100vh;">
+        <h1>{{ appData['name'] }}</h1>
+        <div id="g_id_onload" data-client_id="{{ appData['GoogleClientID'] }}" data-context="signin" data-ux_mode="popup" data-callback="handleGoogleCredentialResponse" data-auto_prompt="false"></div>
+        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+      </div>
+    </main>
+  </body>
+</html>
