@@ -3,9 +3,8 @@
 {% block body %}
 
 <div class="d-flex flex-column align-items-center justify-content-center" style="height:100vh;">
-  <h1>{{ app_data["name"] }}</h1>
-  <h2>{{ app_data["description"] }}</h2>
-  <div id="g_id_onload" data-client_id="370569209825-9g4rco8fft67ij9hqc4iskjd14ii9thv.apps.googleusercontent.com" data-context="signin" data-ux_mode="popup" data-callback="handleGoogleCredentialResponse" data-auto_prompt="false"></div>
+  <h1>{{ appData['name'] }}</h1>
+  <div id="g_id_onload" data-client_id="{{ appData['GoogleClientID'] }}" data-context="signin" data-ux_mode="popup" data-callback="handleGoogleCredentialResponse" data-auto_prompt="false"></div>
   <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
 </div>
 {% endblock %}
