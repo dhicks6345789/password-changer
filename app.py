@@ -35,7 +35,7 @@ def index():
     return flask.render_template("index.html", appData=appData)
   else:
     print("Rendering error!")
-    return flask.render_template("error.html", errorMessage=configError)
+    return flask.render_template("error.html", appData=appData, errorMessage=configError)
   
 if __name__ == "__main__":
   app.run(debug=False, port=8070)
