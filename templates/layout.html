@@ -49,12 +49,13 @@
         return JSON.parse(jsonPayload);
       }
       
-      function handleGoogleCredentialResponse(theResponse) {
+      function handleGoogleCredentialResponse(theGoogleResponse) {
         console.log("Called handleGoogleCredentialResponse.");
-        credential = parseJWT(theResponse.credential);
-        console.log(credential);
-        doAPICall("authenticateGoogleCredential", {"aud":"bananas", "iss":"apples"}, function (theResponse) {
-          console.log(theResponse);
+        //credential = parseJWT(theResponse.credential);
+        //console.log(credential);
+        //doAPICall("authenticateGoogleCredential", {"aud":"bananas", "iss":"apples"}, function (theResponse) {
+        doAPICall("verifyGoogleIDToken", {"googleIDToken":theGoogleResponse.credential}, function(theAPIResponse) {
+          console.log(theAPIResponse);
         },"POST");
       }
     </script>
