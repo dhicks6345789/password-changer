@@ -102,8 +102,9 @@ def getAdditionalUsers():
   else:
     userData = loginTokenCache.get(loginToken)
     if userData:
-      print(userData)
-  return "[\"j.smith\",\"f.bloggs\"]"
+      if userData["emailAddress"] in permissions.keys():
+          return permissions[userData["emailAddress"]]
+  return "[]"
 
 # Set the user's own new password.
 @app.route("/api/setOwnPassword", methods=["POST"])
