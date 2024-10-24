@@ -28,6 +28,12 @@ def index():
     return flask.render_template("index.html", appData=appData)
   else:
     return flask.render_template("error.html", appData=appData, errorMessage=configError)
-  
+
+@app.route("/api/authenticateGoogleCredential", methods=["POST"])
+def authenticateGoogleCredential():
+  aud = flask.request.values.get("aud", None)
+  print(aud)
+  return("authCalled")
+
 if __name__ == "__main__":
   app.run(debug=True, port=8070)
