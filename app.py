@@ -43,7 +43,7 @@ else:
 
 # Open and read the permissions.txt file and any group lists found in the "groups" folder.
 permissions = {}
-if os.path.isfile("permissions.txt")
+if os.path.isfile("permissions.txt"):
   try:
     permissionsFile = open("permissions.txt")
   except OSError:
