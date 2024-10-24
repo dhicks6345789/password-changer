@@ -62,7 +62,7 @@
       // The function called when the page is fully loaded and ready to display.
       function doPageLoad() {
         configError = "{{ appData['configError'] }}";
-        if configError != "" {
+        if (configError != "") {
           showErrorMessage(configError);
         }
       }
