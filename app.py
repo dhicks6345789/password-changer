@@ -40,7 +40,7 @@ def verifyGoogleIDToken():
     print(googleIDToken)
     try:
         # See for further details: https://developers.google.com/identity/gsi/web/guides/verify-google-id-token
-        IDInfo = google.oauth2.id_token.verify_oauth2_token(googleIDToken, google.auth.transport.requests.Request(), googleClientID)
+        IDInfo = google.oauth2.id_token.verify_oauth2_token(googleIDToken, google.auth.transport.requests.Request(), clientSecretData["web"]["client_id"])
         
         # If the issuer isn't Google, there's a problem.
         if IDInfo["iss"] not in ["accounts.google.com", "https://accounts.google.com"]:
