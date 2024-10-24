@@ -29,6 +29,8 @@ print(appData)
 
 @app.route("/")
 def index():
+  print("Index called")
+  print(configError)
   if configError == "":
     return flask.render_template("index.html", appData=appData)
   else:
