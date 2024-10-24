@@ -50,8 +50,6 @@ if os.path.isdir("groups"):
         for groupLine in groupFile.readlines():
             groups[groupName].append(groupLine.strip())
         groupFile.close()
-print("Groups")
-print(groups)
 
 # Open and read the permissions.txt file and any group lists found in the "groups" folder.
 permissions = {}
@@ -70,8 +68,6 @@ if os.path.isfile("permissions.txt"):
             configError = "Configuration error - User " + permissionsUser.strip() + " referenced for group " + groupName.strip() + ", but that group not listed."
         permissions[permissionsUser.strip()] = groupNames.strip()
   permissionsFile.close()
-print("Permissions:")
-print(permissions)
 
 appData = {
   "name":"Password Changer",
