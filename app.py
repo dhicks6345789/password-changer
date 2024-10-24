@@ -38,4 +38,4 @@ def index():
     return flask.render_template("error.html", errorMessage=configError)
   
 if __name__ == "__main__":
-  app.run(debug=True, port=8070)
+  app.run(debug=False, port=8070)
