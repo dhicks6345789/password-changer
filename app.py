@@ -1,4 +1,5 @@
 # Standard libraries
+import os
 import json
 import uuid
 
@@ -40,6 +41,22 @@ else:
   clientSecretData = json.load(clientSecretFile)
   clientSecretFile.close()
 
+# Open and read the permissions.txt file and any group lists found in the "groups" folder.
+permissions = {}
+if os.path.isfile("permissions.txt")
+  try:
+    permissionsFile = open("permissions.txt")
+  except OSError:
+    configError = "Configuration error - Couldn't load file permissions.txt."
+  else:
+    for permissionsLine in permissionsFile.readlines():
+      permissionsSplit = permissionsLine.split(":")
+      for permissionsUser in permissionsSplit[0].split(","):
+        permissions[permissionsUser.strip()] = permissionsSplit[1].strip()
+  permissionsFile.close()
+
+print(permissions)
+
 appData = {
   "name":"Password Changer",
   "description":"A utility to change your account password.",
@@ -79,7 +96,7 @@ def verifyGoogleIDToken():
 # Return a list of additional users, if any, the current user can set the passwords of.
 @app.route("/api/setPassword", methods=["POST"])
 def getAdditionalUsers():
-  return "[]"
+  return "[\"j.smith\",\"f.bloggs\"]"
 
 # Set the user's own new password.
 @app.route("/api/setOwnPassword", methods=["POST"])
