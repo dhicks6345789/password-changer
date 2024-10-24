@@ -36,7 +36,7 @@ clientSecretData = {"web":{"client_id":""}}
 try:
   clientSecretFile = open("client_secret.json")
 except OSError:
-  configError = "Could not load file client_secret.json."
+  configError = "Configuration error - Couldn't load file client_secret.json."
 else:
   clientSecretData = json.load(clientSecretFile)
   clientSecretFile.close()
@@ -46,14 +46,12 @@ appData = {
   "description":"A utility to change your account password.",
   "keywords":"password, change",
   "author":"David Hicks",
-  "configError":"",
+  "configError":configError,
   "GoogleClientID":clientSecretData["web"]["client_id"]
 }
 
 @app.route("/")
 def index():
-  if not configError == "":
-    appData["configError"] = configError
   return flask.render_template("index.html", appData=appData)
 
 @app.route("/api/verifyGoogleIDToken", methods=["POST"])
@@ -72,7 +70,7 @@ def verifyGoogleIDToken():
       raise ValueError("Mismatched client ID.")
   except ValueError as e:
     # Invalid token.
-    return "Error - " + repr(e)
+    return "ERROR: " + repr(e)
   # At this point, we've verified the Google login token. Generate and cache a login token for our client-side code to use.
   loginToken = generateLoginToken({"emailAddress":IDInfo["email"], "loginType":"google"})
   return(loginToken)
