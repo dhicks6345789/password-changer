@@ -59,10 +59,10 @@
           } else {
             document.getElementById("googleLoginBlock").style.display = "none";
             document.getElementById("changePasswordBlock").style.display = "flex";
-            print(theAPIResponse);
+            console.log(theAPIResponse);
             loginToken = theAPIResponse;
             doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
-              print(theAPIResponse);
+              console.log(theAPIResponse);
             }, "POST");
           }
         }, "POST");
