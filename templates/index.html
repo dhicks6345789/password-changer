@@ -18,8 +18,6 @@
     <script src="https://accounts.google.com/gsi/client" async></script>
 
     <script>
-      var configError = "{{ appData['configError'] }}"
-      
       // A function to do an api call to the server.
       function doAPICall(theMethod, theParams, theSuccessFunction, callMethod="GET") {
         var apiCall = new XMLHttpRequest();
@@ -63,6 +61,7 @@
       
       // The function called when the page is fully loaded and ready to display.
       function doPageLoad() {
+        configError = "{{ appData['configError'] }}";
         if configError != "" {
           showErrorMessage(configError);
         }
