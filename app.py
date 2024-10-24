@@ -1,12 +1,34 @@
-# Standard libraries.
-import flask
+# Standard libraries
 import json
+import uuid
+
+# The Flask web application framework.
+import flask
+
+# The Flask-Caching in-memory store, used to store values (i.e. login tokens) between executions of this script.
+import flask_caching
 
 # Libraries for handling Google OAuth (i.e. user sign-in) authentication flow.
 import google.oauth2.id_token
 import google.auth.transport.requests
 
+# Helper function to generate and cache a login token for a validated user.
+def generateLoginToken(userData):
+    loginToken = str(uuid.uuid4())
+    loginTokenCache.set(loginToken, userData)
+    return(loginToken)
+
+# Instantiate the Flask app, set configuration values.
 app = flask.Flask(__name__)
+app.config.from_mapping({
+    # Set values for the Flask-Caching module.
+    "CACHE_TYPE": "MemcachedCache",
+    "CACHE_DEFAULT_TIMEOUT": 1800
+})
+# Instantiate the cache object.
+loginTokenCache = flask_caching.Cache(app)
+emailLoginsCache = flask_caching.Cache(app)
+
 configError = ""
 clientSecretData = {"web":{"client_id":""}}
 
