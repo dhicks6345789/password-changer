@@ -47,7 +47,7 @@ def verifyGoogleIDToken():
             raise ValueError("Wrong issuer.")
             
         # The aud value should match the client ID.
-        if not IDInfo["aud"] == googleClientID:
+        if not IDInfo["aud"] == clientSecretData["web"]["client_id"]:
             raise ValueError("Mismatched client ID.")
     except ValueError as e:
         # Invalid token.
