@@ -41,6 +41,18 @@ else:
   clientSecretData = json.load(clientSecretFile)
   clientSecretFile.close()
 
+groups = {}
+if os.path.isdir("groups"):
+    for group in os.path.listdir("groups"):
+        groupName = group.rsplit(".", 1)[0]
+        groups[groupName] = []
+        groupFile = open("groups" + os.sep + group)
+        for groupLine in groupFile.readlines():
+            groups[groupName].append(groupline.strip())
+        permissionsFile.close()
+print("Groups")
+print(groups)
+
 # Open and read the permissions.txt file and any group lists found in the "groups" folder.
 permissions = {}
 if os.path.isfile("permissions.txt"):
@@ -52,9 +64,12 @@ if os.path.isfile("permissions.txt"):
     for permissionsLine in permissionsFile.readlines():
       permissionsSplit = permissionsLine.split(":")
       for permissionsUser in permissionsSplit[0].split(","):
-        permissions[permissionsUser.strip()] = permissionsSplit[1].strip()
+        groupName = permissionsSplit[1].strip()
+        if not groupName in groups.keys():
+          configError = "Configuration error - User " + permissionsUser.strip() + " referenced for group " + groupName + ", but that group not listed."
+        permissions[permissionsUser.strip()] = groupName
   permissionsFile.close()
-
+print("Permissions:")
 print(permissions)
 
 appData = {
