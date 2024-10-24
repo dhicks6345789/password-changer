@@ -43,7 +43,7 @@ else:
 
 groups = {}
 if os.path.isdir("groups"):
-    for group in os.path.listdir("groups"):
+    for group in os.listdir("groups"):
         groupName = group.rsplit(".", 1)[0]
         groups[groupName] = []
         groupFile = open("groups" + os.sep + group)
