@@ -34,6 +34,11 @@ if not exist "C:\Program Files\PasswordChanger\venv\Lib\site-packages\google" (
   venv\Scripts\pip.exe install google-auth-oauthlib
 )
 
+rem Make sure the "groups" folder exists.
+if not exist "groups\" (
+  mkdir groups
+)
+
 echo Setting up PasswordChanger (running via the Waitress WSGI server) as a Windows service...
 net stop PasswordChanger > nul 2>&1
 "%srcPath%\nssm\2.24\win64\nssm.exe" install PasswordChanger "C:\Program Files\PasswordChanger\runWaitress.bat" > nul 2>&1
