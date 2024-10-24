@@ -38,6 +38,5 @@ net stop PasswordChanger > nul 2>&1
 net start PasswordChanger
 
 rem Note: to test locally, go to a command line and do:
-rem net stop PasswordChanger
 rem cd "C:\Program Files\Password Changer"
-rem cls & venv\Scripts\python.exe app.py
+rem cls & net stop PasswordChanger & venv\Scripts\python.exe app.py
