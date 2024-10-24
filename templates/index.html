@@ -52,10 +52,8 @@
       // to our server via an API call to validate. If valid, we'll receive a login token, otherwise we'll receive an error message.
       function handleGoogleCredentialResponse(theGoogleResponse) {
         doAPICall("verifyGoogleIDToken", {"googleIDToken":theGoogleResponse.credential}, function(theAPIResponse) {
-          console.log(theAPIResponse);
-          console.log(theAPIResponse.split(" ", 1));
           if (theAPIResponse.startsWith("ERROR:")) {
-            showErrorMessage(theAPIResponse.split(" ", 1)[1]);
+            showErrorMessage(theAPIResponse.slice(7));
           }
         }, "POST");
       }
