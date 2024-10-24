@@ -15,6 +15,9 @@ else:
   clientSecretData = json.load(clientSecretFile)
   clientSecretFile.close()
 
+print(clientSecretData)
+print(clientSecretData["web"]["client_id"])
+
 appData = {
   "name": "Password Changer",
   "description": "A utility to change your account password.",
@@ -29,6 +32,7 @@ def index():
   if configError == "":
     return flask.render_template("index.html", appData=appData)
   else:
+    print("Rendering error!")
     return flask.render_template("error.html", errorMessage=configError)
   
 if __name__ == "__main__":
