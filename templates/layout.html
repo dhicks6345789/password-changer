@@ -16,6 +16,14 @@
     
     <!-- Import Google authentication library. -->
     <script src="https://accounts.google.com/gsi/client" async></script>
+
+    <script>
+      function handleLogin(response) {
+        console.log("Bananas!");
+        result = decodeJwtResponse(response.credential);
+        console.log(result);
+      }
+    </script>
   </head>
   <body>
     <main role="main" class="container">
