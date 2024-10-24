@@ -41,22 +41,21 @@
         }
       }
 
-      // A function called when the user completes the "Login With Google" workflow. That gives us a credntial token which we then need to send back
-      // to our server via an API call to validate. If valid, we'll receive a login token, otherwise we'll receive an error message.
-      function handleGoogleCredentialResponse(theGoogleResponse) {
-        doAPICall("verifyGoogleIDToken", {"googleIDToken":theGoogleResponse.credential}, function(theAPIResponse) {
-          if (theAPIResponse.startsWith("Error")) {
-            console.log("Error returned:")
-            console.log(apiResponse);
-          }
-        },"POST");
-      }
-
       // A function to display an error message for the end user.
       function showErrorMessage(theErrorMessage) {
         document.getElementById("googleLoginBlock").style.display = "none";
         document.getElementById("errorMessageBlock").style.display = "flex";
         document.getElementById("errorMessageText").innerHTML = theErrorMessage;
+      }
+
+      // A function called when the user completes the "Login With Google" workflow. That gives us a credntial token which we then need to send back
+      // to our server via an API call to validate. If valid, we'll receive a login token, otherwise we'll receive an error message.
+      function handleGoogleCredentialResponse(theGoogleResponse) {
+        doAPICall("verifyGoogleIDToken", {"googleIDToken":theGoogleResponse.credential}, function(theAPIResponse) {
+          if (theAPIResponse.startsWith("ERROR:")) {
+            showErrorMessage(theAPIResponse.split(" ", 1)[1]);
+          }
+        }, "POST");
       }
       
       // The function called when the page is fully loaded and ready to display.
