@@ -64,10 +64,11 @@ if os.path.isfile("permissions.txt"):
     for permissionsLine in permissionsFile.readlines():
       permissionsSplit = permissionsLine.split(":")
       for permissionsUser in permissionsSplit[0].split(","):
-        groupName = permissionsSplit[1].strip()
-        if not groupName in groups.keys():
-          configError = "Configuration error - User " + permissionsUser.strip() + " referenced for group " + groupName + ", but that group not listed."
-        permissions[permissionsUser.strip()] = groupName
+        groupNames = permissionsSplit[1].strip()
+        for groupName in groupNames.split(","):
+          if not groupName.strip() in groups.keys():
+            configError = "Configuration error - User " + permissionsUser.strip() + " referenced for group " + groupName.strip() + ", but that group not listed."
+        permissions[permissionsUser.strip()] = groupNames.strip()
   permissionsFile.close()
 print("Permissions:")
 print(permissions)
