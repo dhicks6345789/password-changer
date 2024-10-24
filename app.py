@@ -3,6 +3,7 @@ import json
 
 app = flask.Flask(__name__)
 configError = ""
+clientSecretData = {"web":{"client_id":""}}
 
 # Open and read client_secret.json containing the Google authentication client secrets.
 try:
