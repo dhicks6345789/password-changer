@@ -10,13 +10,9 @@ try:
   clientSecretFile = open("client_secret.json")
 except OSError:
   configError = "Could not load file client_secret.json."
-  print(configError)
 else:
   clientSecretData = json.load(clientSecretFile)
   clientSecretFile.close()
-
-print(clientSecretData)
-print(clientSecretData["web"]["client_id"])
 
 appData = {
   "name": "Password Changer",
@@ -25,16 +21,12 @@ appData = {
   "author": "David Hicks",
   "GoogleClientID": clientSecretData["web"]["client_id"]
 }
-print(appData)
 
 @app.route("/")
 def index():
-  print("Index called")
-  print(configError)
   if configError == "":
     return flask.render_template("index.html", appData=appData)
   else:
-    print("Rendering error!")
     return flask.render_template("error.html", appData=appData, errorMessage=configError)
   
 if __name__ == "__main__":
