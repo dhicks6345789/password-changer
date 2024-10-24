@@ -73,8 +73,7 @@ def verifyGoogleIDToken():
     return "ERROR: " + repr(e)
   # At this point, we've verified the Google login token. Generate and cache a login token for our client-side code to use.
   loginToken = generateLoginToken({"emailAddress":IDInfo["email"], "loginType":"google"})
-  return "ERROR: Bananas!"
-  #return loginToken
+  return loginToken
   
 if __name__ == "__main__":
   app.run(debug=True, port=8070)
