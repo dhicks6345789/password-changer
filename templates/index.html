@@ -18,6 +18,8 @@
     <script src="https://accounts.google.com/gsi/client" async></script>
 
     <script>
+      var loginToken = "";
+      
       // A function to do an api call to the server.
       function doAPICall(theMethod, theParams, theSuccessFunction, callMethod="GET") {
         var apiCall = new XMLHttpRequest();
@@ -57,6 +59,11 @@
           } else {
             document.getElementById("googleLoginBlock").style.display = "none";
             document.getElementById("changePasswordBlock").style.display = "flex";
+            print(theAPIResponse);
+            loginToken = theAPIResponse;
+            doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
+              print(theAPIResponse);
+            }
           }
         }, "POST");
       }
