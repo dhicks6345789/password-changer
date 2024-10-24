@@ -13,6 +13,8 @@ else:
   clientSecretData = json.load(clientSecretFile)
   clientSecretFile.close()
 
+print(clientSecretData)
+
 appData = {
   "name": "Password Changer",
   "description": "A utility to change your account password.",
