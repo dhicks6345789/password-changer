@@ -64,7 +64,7 @@
         userListHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\" onclick=\"showChangePasswordBlock(" + userEmail + ")\">Myself</button>";
         for (pl = 0; pl < userList.length; pl = pl + 1) {
           if (userList[pl].includes(userNamePart)) {
-            userListHTML = userListHTML + "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\" onclick=\"showChangePasswordBlock(" + userList[pl] + ")>" + userList[pl] + "</button>";
+            userListHTML = userListHTML + "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\" onclick=\"showChangePasswordBlock(" + userList[pl] + ")\">" + userList[pl] + "</button>";
           }
         }
         userListDiv.innerHTML = userListHTML;
@@ -118,6 +118,7 @@
       </div>
       <div id="selectUserBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
         <h1>Select User To Change Password For:</h1>
+        <h2>---</h2>
         <div class="form-group">
           <label for="userName">User:</label>
           <input id="userName" type="text" class="form-control" placeholder="Search Users..." oninput="populateUserList()">
