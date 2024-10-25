@@ -58,7 +58,7 @@
         userListHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\">Myself</button>";
         for (pl = 0; pl < userList.length; pl = pl + 1) {
           if (userList[pl].includes(userNamePart)) {
-            userListHTML = userListHTML + "<div>" + userList[pl] + "</div>";
+            userListHTML = userListHTML + "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\">" + userList[pl] + "</button>";
           }
         }
         userListDiv.innerHTML = userListHTML;
