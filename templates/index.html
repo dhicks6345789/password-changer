@@ -53,11 +53,9 @@
 
       // A function to populate the list-of-users.
       function populateUserList() {
-        console.log("populateUserList called!");
         userListDiv = document.getElementById("userList");
         userNamePart = document.getElementById("userName").value;
-        console.log(userNamePart);
-        userListHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\">Myself</button>";
+        userListHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\">Myself</button>";
         for (pl = 0; pl < userList.length; pl = pl + 1) {
           if (userList[pl].includes(userNamePart)) {
             userListHTML = userListHTML + "<div>" + userList[pl] + "</div>";
