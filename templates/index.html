@@ -61,10 +61,10 @@
       function populateUserList() {
         userListDiv = document.getElementById("userList");
         userNamePart = document.getElementById("userName").value;
-        userListHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\" onclick=\"showChangePasswordBlock(" + userEmail + ")\">Myself</button>";
+        userListHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\" onclick=\"showChangePasswordBlock('" + userEmail + "')\">Myself</button>";
         for (pl = 0; pl < userList.length; pl = pl + 1) {
           if (userList[pl].includes(userNamePart)) {
-            userListHTML = userListHTML + "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\" onclick=\"showChangePasswordBlock(" + userList[pl] + ")\">" + userList[pl] + "</button>";
+            userListHTML = userListHTML + "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\" onclick=\"showChangePasswordBlock('" + userList[pl] + "')\">" + userList[pl] + "</button>";
           }
         }
         userListDiv.innerHTML = userListHTML;
