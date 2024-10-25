@@ -57,7 +57,7 @@
         userListDiv = document.getElementById("userList");
         userNamePart = document.getElementById("userName").value;
         console.log(userNamePart);
-        userListHTML = "";
+        userListHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\">Myself</button>";
         for (pl = 0; pl < userList.length; pl = pl + 1) {
           if (userList[pl].includes(userNamePart)) {
             userListHTML = userListHTML + "<div>" + userList[pl] + "</div>";
@@ -114,7 +114,7 @@
         <h1>Select User To Change Password For:</h1>
         <div class="form-group">
           <label for="userName">User:</label>
-          <input id="userName" type="text" class="form-control" placeholder="Search Users..." onchange="populateUserList()">
+          <input id="userName" type="text" class="form-control" placeholder="Search Users..." oninput="populateUserList()">
         </div>
         <div id="userList" style="max-height:40vh; overflow-x:hidden; overflow-y:auto;">
         </div>
