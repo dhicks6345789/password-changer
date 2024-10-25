@@ -19,6 +19,7 @@
 
     <script>
       var loginToken = "";
+      var userList = [];
       
       // A function to do an api call to the server.
       function doAPICall(theMethod, theParams, theSuccessFunction, callMethod="GET") {
@@ -50,6 +51,19 @@
         document.getElementById("errorMessageText").innerHTML = theErrorMessage;
       }
 
+      // A function to populate the list-of-users.
+      function populateUserList() {
+        userListDiv = document.getElementById("userList");
+        userNamePart = document.getElementById("userName").value;
+        userListHTML = "";
+        for (pl = 0; pl < userList.length; pl = pl + 1) {
+          if (userList[pl].includes(userNamePart)) {
+            userListHTML = userListHTML + "<div>" + userList[pl] + "</div>";
+          }
+        }
+        userListDiv.innerHTML = userListHTML;
+      }
+
       // A function called when the user completes the "Login With Google" workflow. That gives us a credntial token which we then need to send back
       // to our server via an API call to validate. If valid, we'll receive a login token, otherwise we'll receive an error message.
       function handleGoogleCredentialResponse(theGoogleResponse) {
@@ -61,7 +75,8 @@
             console.log(theAPIResponse);
             loginToken = theAPIResponse;
             doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
-              if (theAPIResponse == "[]") {
+              userList = JSON.parse(theAPIResponse);
+              if (userList == []) {
                 // User can't change passwords for other users, go straight to the change-my-own-password dialog.
                 document.getElementById("changePasswordBlock").style.display = "flex";
               } else {
@@ -95,13 +110,12 @@
       </div>
       <div id="selectUserBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
         <h1>Select User To Change Password For:</h1>
-        Myself
-        <select class="form-select" id="selectUserList">
-          <option value="">Select User</option>
-          <option value="One">One</option>
-          <option value="Two">Two</option>
-          <option value="Three">Three</option>
-        </select>
+        <div class="form-group">
+          <label for="userName">User:</label>
+          <input id="userName" type="text" class="form-control" placeholder="Search Users..." onchange="populateUserList">
+        </div>
+        <div id="userList">
+        </div>
       </div>
       <div id="changePasswordBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
         <h1>Enter new password:</h1>
