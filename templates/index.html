@@ -51,11 +51,15 @@
         document.getElementById("errorMessageText").innerHTML = theErrorMessage;
       }
 
+      function showChangePasswordBlock(theUser) {
+        document.getElementById("changePasswordBlock").style.display = "flex";
+      }
+
       // A function to populate the list-of-users.
       function populateUserList() {
         userListDiv = document.getElementById("userList");
         userNamePart = document.getElementById("userName").value;
-        userListHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\">Myself</button>";
+        userListHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\" onclick=\"showChangePasswordBlock(" + "myself" + ")\">Myself</button>";
         for (pl = 0; pl < userList.length; pl = pl + 1) {
           if (userList[pl].includes(userNamePart)) {
             userListHTML = userListHTML + "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\">" + userList[pl] + "</button>";
@@ -73,11 +77,12 @@
           } else {
             document.getElementById("googleLoginBlock").style.display = "none";
             loginToken = theAPIResponse;
+            console.log(theGoogleResponse.credential);
             doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
               userList = JSON.parse(theAPIResponse);
               if (userList == []) {
                 // User can't change passwords for other users, go straight to the change-my-own-password dialog.
-                document.getElementById("changePasswordBlock").style.display = "flex";
+                showChangePasswordBlock("myself");
               } else {
                 // User can change passwords for some other users, populate and display that list of users to select from.
                 document.getElementById("selectUserBlock").style.display = "flex";
