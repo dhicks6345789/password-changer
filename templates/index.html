@@ -19,6 +19,7 @@
 
     <script>
       var loginToken = "";
+      var userEmail = "";
       var userList = [];
       
       // A function to do an api call to the server.
@@ -51,18 +52,19 @@
         document.getElementById("errorMessageText").innerHTML = theErrorMessage;
       }
 
-      function showChangePasswordBlock(theUser) {
+      function showChangePasswordBlock(theUserEmail) {
         document.getElementById("changePasswordBlock").style.display = "flex";
+        console.log(theUserEmail);
       }
 
       // A function to populate the list-of-users.
       function populateUserList() {
         userListDiv = document.getElementById("userList");
         userNamePart = document.getElementById("userName").value;
-        userListHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\" onclick=\"showChangePasswordBlock(" + "myself" + ")\">Myself</button>";
+        userListHTML = "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\" onclick=\"showChangePasswordBlock(" + userEmail + ")\">Myself</button>";
         for (pl = 0; pl < userList.length; pl = pl + 1) {
           if (userList[pl].includes(userNamePart)) {
-            userListHTML = userListHTML + "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\">" + userList[pl] + "</button>";
+            userListHTML = userListHTML + "<button type=\"button\" class=\"btn btn-outline-secondary\" style=\"width:100%\" onclick=\"showChangePasswordBlock(" + userList[pl] + ")>" + userList[pl] + "</button>";
           }
         }
         userListDiv.innerHTML = userListHTML;
@@ -76,13 +78,14 @@
             showErrorMessage(theAPIResponse.slice(7));
           } else {
             document.getElementById("googleLoginBlock").style.display = "none";
-            loginToken = theAPIResponse;
-            console.log(theGoogleResponse.credential);
+            theAPIResponseSplit = theAPIResponse.split(",");
+            loginToken = theAPIResponseSplit[0];
+            userEmail = theAPIResponseSplit[1];
             doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
               userList = JSON.parse(theAPIResponse);
               if (userList == []) {
                 // User can't change passwords for other users, go straight to the change-my-own-password dialog.
-                showChangePasswordBlock("myself");
+                showChangePasswordBlock(userEmail);
               } else {
                 // User can change passwords for some other users, populate and display that list of users to select from.
                 document.getElementById("selectUserBlock").style.display = "flex";
