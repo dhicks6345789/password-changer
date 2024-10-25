@@ -103,7 +103,7 @@ def verifyGoogleIDToken():
     return "ERROR: " + repr(e)
   # At this point, we've verified the Google login token. Generate and cache a login token for our client-side code to use.
   loginToken = generateLoginToken({"emailAddress":IDInfo["email"], "loginType":"google"})
-  return loginToken
+  return loginToken + "," + IDInfo["email"]
 
 # Return a list of additional users, if any, the current user can set the passwords of.
 @app.route("/api/getAdditionalUsers", methods=["POST"])
