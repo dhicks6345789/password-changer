@@ -71,6 +71,16 @@
         userListDiv.innerHTML = userListHTML;
       }
 
+      // Toggles the visibility of the "userPassword" password input.
+      function togglePassword() {
+        userPassword = document.getElementById("userPassword");
+        if (userPassword.getAttribute("type") == "password") {
+          userPassword.setAttribute("type") = "text";
+        } else {
+          userPassword.setAttribute("type") = "password";
+        }
+      }
+
       // A function called when the user completes the "Login With Google" workflow. That gives us a credntial token which we then need to send back
       // to our server via an API call to validate. If valid, we'll receive a login token, otherwise we'll receive an error message.
       function handleGoogleCredentialResponse(theGoogleResponse) {
@@ -132,6 +142,7 @@
         <div class="form-group">
           <label for="userPassword">New Password:</label>
           <input id="userPassword" type="password" class="form-control">
+          <button id="togglePassword" class="bi bi-eye-slash" onclick="togglePassword()"></button>
         </div>
       </div>
     </main>
