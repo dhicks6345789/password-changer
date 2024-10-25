@@ -58,11 +58,16 @@
             showErrorMessage(theAPIResponse.slice(7));
           } else {
             document.getElementById("googleLoginBlock").style.display = "none";
-            document.getElementById("changePasswordBlock").style.display = "flex";
             console.log(theAPIResponse);
             loginToken = theAPIResponse;
             doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
-              console.log(theAPIResponse);
+              if theAPIResponse == "[]" {
+                // User can't change passwords for other users, go straight to the change-my-own-password dialog.
+                document.getElementById("changePasswordBlock").style.display = "flex";
+              } else {
+                // User can change passwords for some other users, populate and display that list of users to select from.
+                document.getElementById("selectUserBlock").style.display = "flex";
+              }
             }, "POST");
           }
         }, "POST");
@@ -87,6 +92,16 @@
         <h1>{{ appData['name'] }}</h1>
         <div id="g_id_onload" data-client_id="{{ appData['GoogleClientID'] }}" data-context="signin" data-ux_mode="popup" data-callback="handleGoogleCredentialResponse" data-auto_prompt="false" data-auto_select="true"></div>
         <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left"></div>
+      </div>
+      <div id="selectUserBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
+        <h1>Select User To Change Password For:</h1>
+        Myself
+        <select class="form-select" id="selectUserList">
+          <option value="">Select User</option>
+          <option value="One">One</option>
+          <option value="Two">Two</option>
+          <option value="Three">Three</option>
+        </select>
       </div>
       <div id="changePasswordBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
         <h1>Enter new password:</h1>
