@@ -84,12 +84,7 @@
           document.getElementById("hidePassword").style.display = "none";
         }
       }
-
-      // Submits the new user password.
-      function submitPassword() {
-        console.log("Submit password...");
-      }
-
+      
       // A function called when the user completes the "Login With Google" workflow. That gives us a credntial token which we then need to send back
       // to our server via an API call to validate. If valid, we'll receive a login token, otherwise we'll receive an error message.
       function handleGoogleCredentialResponse(theGoogleResponse) {
@@ -124,7 +119,7 @@
         } else {
           document.getElementById("setPasswordForm").addEventListener('submit', function(event) { 
             event.preventDefault(); 
-            submitPassword();
+            console.log("Submit password...");
           }); 
         }
       }
@@ -166,8 +161,8 @@
             <div class="col-2"></div>
           </div>
         </div>
-        <div class="input-group mb-3">
-          <form id="setPasswordForm">
+        <form id="setPasswordForm">
+          <div class="input-group mb-3">
             <input id="userPassword" type="password" class="form-control">
             <button id="hidePassword" type="button" class="btn btn-outline-secondary" onclick="togglePassword()" style="display:none;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
@@ -183,8 +178,8 @@
               </svg>
             </button>
             <input class="btn btn-primary" type="submit" value="Set Password">
-          </form>
-        </div>
+          </div>
+        </form>
     </main>
   </body>
 </html>
