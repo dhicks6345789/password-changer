@@ -61,7 +61,7 @@
             console.log(theAPIResponse);
             loginToken = theAPIResponse;
             doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
-              if theAPIResponse == "[]" {
+              if (theAPIResponse == "[]") {
                 // User can't change passwords for other users, go straight to the change-my-own-password dialog.
                 document.getElementById("changePasswordBlock").style.display = "flex";
               } else {
