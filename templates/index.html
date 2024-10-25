@@ -75,9 +75,9 @@
       function togglePassword() {
         userPassword = document.getElementById("userPassword");
         if (userPassword.getAttribute("type") == "password") {
-          userPassword.setAttribute("type") = "text";
+          userPassword.setAttribute("type", "text");
         } else {
-          userPassword.setAttribute("type") = "password";
+          userPassword.setAttribute("type", "password");
         }
       }
 
@@ -143,6 +143,7 @@
           <label for="userPassword">New Password:</label>
           <input id="userPassword" type="password" class="form-control">
           <button id="togglePassword" class="bi bi-eye-slash" onclick="togglePassword()"></button>
+          <button type="button" class="btn btn-outline-secondary bi bi-eye-slash"></button>
         </div>
       </div>
     </main>
