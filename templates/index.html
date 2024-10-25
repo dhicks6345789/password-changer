@@ -72,13 +72,13 @@
             showErrorMessage(theAPIResponse.slice(7));
           } else {
             document.getElementById("googleLoginBlock").style.display = "none";
-            console.log(theAPIResponse);
             loginToken = theAPIResponse;
             doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
               userList = JSON.parse(theAPIResponse);
               if (userList == []) {
                 // User can't change passwords for other users, go straight to the change-my-own-password dialog.
                 document.getElementById("changePasswordBlock").style.display = "flex";
+                populateUserList();
               } else {
                 // User can change passwords for some other users, populate and display that list of users to select from.
                 document.getElementById("selectUserBlock").style.display = "flex";
@@ -112,7 +112,7 @@
         <h1>Select User To Change Password For:</h1>
         <div class="form-group">
           <label for="userName">User:</label>
-          <input id="userName" type="text" class="form-control" placeholder="Search Users..." onchange="populateUserList">
+          <input id="userName" type="text" class="form-control" placeholder="Search Users..." onchange="populateUserList()">
         </div>
         <div id="userList">
         </div>
