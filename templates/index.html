@@ -53,8 +53,11 @@
 
       // A function to populate the list-of-users.
       function populateUserList() {
+        console.log("populateUserList called!");
+        console.log(userList);
         userListDiv = document.getElementById("userList");
         userNamePart = document.getElementById("userName").value;
+        console.log(userNamePart);
         userListHTML = "";
         for (pl = 0; pl < userList.length; pl = pl + 1) {
           if (userList[pl].includes(userNamePart)) {
