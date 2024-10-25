@@ -54,7 +54,6 @@
       // A function to populate the list-of-users.
       function populateUserList() {
         console.log("populateUserList called!");
-        console.log(userList);
         userListDiv = document.getElementById("userList");
         userNamePart = document.getElementById("userName").value;
         console.log(userNamePart);
@@ -81,10 +80,10 @@
               if (userList == []) {
                 // User can't change passwords for other users, go straight to the change-my-own-password dialog.
                 document.getElementById("changePasswordBlock").style.display = "flex";
-                populateUserList();
               } else {
                 // User can change passwords for some other users, populate and display that list of users to select from.
                 document.getElementById("selectUserBlock").style.display = "flex";
+                populateUserList();
               }
             }, "POST");
           }
@@ -117,7 +116,7 @@
           <label for="userName">User:</label>
           <input id="userName" type="text" class="form-control" placeholder="Search Users..." onchange="populateUserList()">
         </div>
-        <div id="userList">
+        <div id="userList" class="overflow-scroll" style="height:40vh;">
         </div>
       </div>
       <div id="changePasswordBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
