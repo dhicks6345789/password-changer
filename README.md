@@ -8,7 +8,7 @@ The backend can be modified to change passwords for other accounts at the same t
 
 Password Changer is intended for installation by the systems administrator of a Google Workspace domain, for use by their users to change passwords. It was written to provide a way for users in a school to change their account passwords and for some users (teaching staff) to be able to change the passwords of some other users (pupils). This is not something for the average user to install, it won't have any functionality for changing passwords outside of system administration.
 
-This project might be a handy starting point for anyone looking for a single-page Flask example app to add their own functionality to.
+This project might be a handy starting point for anyone looking for an example single-page Flask app complete with login-with-Google functionality.
 
 ## Implementation
 
