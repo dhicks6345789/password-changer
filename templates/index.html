@@ -53,8 +53,9 @@
       }
 
       function showChangePasswordBlock(theUserEmail) {
+        document.getElementById("selectUserBlock").style.display = "none";
         document.getElementById("changePasswordBlock").style.display = "flex";
-        console.log(theUserEmail);
+        document.getElementById("newPasswordUser").innerHTML = "Enter new password for user: " + theUserEmail;
       }
 
       // A function to populate the list-of-users.
@@ -127,7 +128,11 @@
         </div>
       </div>
       <div id="changePasswordBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
-        <h1>Enter new password:</h1>
+        <h1 id="newPasswordUser">Enter new password for user:</h1>
+        <div class="form-group">
+          <label for="userPassword">New Password:</label>
+          <input id="userPassword" type="password" class="form-control">
+        </div>
       </div>
     </main>
   </body>
