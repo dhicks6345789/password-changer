@@ -42,20 +42,25 @@ scheduler.start()
 groups = {}
 permissions = {}
 configError = ""
+defaultPasswords = {}
 @scheduler.task("interval", id="refreshData", seconds=30, misfire_grace_time=900)
 def refreshData():
-    print("Refreshing data...")
-
     groups = {}
+    defaultPasswords = {}
     if os.path.isdir("groups"):
         for group in os.listdir("groups"):
             groupName = group.rsplit(".", 1)[0]
             groups[groupName] = []
             groupFile = open("groups" + os.sep + group)
             for groupLine in groupFile.readlines():
-                groups[groupName].append(groupLine.strip())
+                groupLineSplit = groupLine.split(",")
+                username = groupLineSplit[0].strip()
+                groups[groupName].append(username)
+                if len(groupLineSplit) > 1:
+                    defaultPasswords[username] = groupLineSplit[1].strip()
             groupFile.close()
-            
+
+    permissions = {}
     # Open and read the permissions.txt file and any group lists found in the "groups" folder.
     if os.path.isfile("permissions.txt"):
         try:
@@ -72,7 +77,6 @@ def refreshData():
                             configError = "Configuration error - User " + permissionsUser.strip() + " referenced for group " + groupName.strip() + ", but that group not listed."
                     permissions[permissionsUser.strip()] = groupNames.strip()
             permissionsFile.close()
-print("Bananas!")
 refreshData()
 
 clientSecretData = {"web":{"client_id":""}}
@@ -128,25 +132,60 @@ def getAdditionalUsers():
     loginToken = flask.request.values.get("loginToken", None)
     if loginToken == None:
         return("ERROR: Missing login token.")
-    else:
-        userData = loginTokenCache.get(loginToken)
-        if userData:
-            if userData["emailAddress"] in permissions.keys():
-                result = {}
-                for groupName in permissions[userData["emailAddress"]].split(","):
-                    for item in groups[groupName]:
-                        result[item] = 1
-                return "[\"" + "\",\"".join(result.keys()) + "\"]"
-        else:
-            return("ERROR: Invalid login token.")
+    userData = loginTokenCache.get(loginToken)
+    if not userData:
+        return("ERROR: Invalid login token.")
+    
+    if userData["emailAddress"] in permissions.keys():
+        result = {}
+        for groupName in permissions[userData["emailAddress"]].split(","):
+            for item in groups[groupName]:
+                result[item] = 1
+        return "[\"" + "\",\"".join(result.keys()) + "\"]"
     return "[]"
 
-# Set the user's own new password.
+# Set the given user's password. Make sure the current user (which might be different) has permissions to set that password first.
 @app.route("/api/setPassword", methods=["POST"])
 def setPassword():
-    newPassword = flask.request.values.get("user", None)
+    loginToken = flask.request.values.get("loginToken", None)
+    if loginToken == None:
+        return("ERROR: Missing login token.")
+    userData = loginTokenCache.get(loginToken)
+    if not userData:
+        return("ERROR: Invalid login token.")
+    
+    user = flask.request.values.get("user", None)
+    if user == None:
+        return("ERROR: Missing value: user.")
+        
     newPassword = flask.request.values.get("newPassword", None)
+    if newPassword == None:
+        return("ERROR: Missing value: newPassword.")
+        
+    if user in defaultPasswords.keys():
+        print("Setting password...")
+        # To do: set password here.
+        #if userData["emailAddress"] in permissions.keys():
     return "New password set for user: " + user
+
+# Get the given user's default password. Make sure the current user (which might be different) has permissions to see that password first.
+@app.route("/api/getDefaultPassword", methods=["POST"])
+def getDefaultPassword():
+    loginToken = flask.request.values.get("loginToken", None)
+    if loginToken == None:
+        return("ERROR: Missing login token.")
+    userData = loginTokenCache.get(loginToken)
+    if not userData:
+        return("ERROR: Invalid login token.")
+    
+    user = flask.request.values.get("user", None)
+    if user == None:
+        return("ERROR: Missing value: user.")
+        
+    if user in defaultPasswords.keys():
+        #if userData["emailAddress"] in permissions.keys():
+        return defaultPasswords[user]
+    return ""
 
 if __name__ == "__main__":
     app.run(debug=True, port=8070, use_reloader=False)
