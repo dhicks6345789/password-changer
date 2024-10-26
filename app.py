@@ -45,6 +45,11 @@ configError = ""
 defaultPasswords = {}
 @scheduler.task("interval", id="refreshData", seconds=30, misfire_grace_time=900)
 def refreshData():
+    global groups
+    global permissions
+    global configError
+    global defaultPasswords
+    
     groups = {}
     defaultPasswords = {}
     if os.path.isdir("groups"):
