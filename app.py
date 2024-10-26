@@ -39,109 +39,114 @@ scheduler = flask_apscheduler.APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 
+groups = {}
+permissions = {}
+configError = ""
 @scheduler.task("interval", id="refreshData", seconds=30, misfire_grace_time=900)
 def refreshData():
     print("Refreshing data...")
 
-# Open and read client_secret.json containing the Google authentication client secrets.
-configError = ""
+    groups = {}
+    if os.path.isdir("groups"):
+        for group in os.listdir("groups"):
+            groupName = group.rsplit(".", 1)[0]
+            groups[groupName] = []
+            groupFile = open("groups" + os.sep + group)
+            for groupLine in groupFile.readlines():
+                groups[groupName].append(groupLine.strip())
+            groupFile.close()
+            
+    # Open and read the permissions.txt file and any group lists found in the "groups" folder.
+    if os.path.isfile("permissions.txt"):
+        try:
+            permissionsFile = open("permissions.txt")
+        except OSError:
+            configError = "Configuration error - Couldn't load file permissions.txt."
+        else:
+            for permissionsLine in permissionsFile.readlines():
+                permissionsSplit = permissionsLine.split(":")
+                for permissionsUser in permissionsSplit[0].split(","):
+                    groupNames = permissionsSplit[1].strip()
+                    for groupName in groupNames.split(","):
+                        if not groupName.strip() in groups.keys():
+                            configError = "Configuration error - User " + permissionsUser.strip() + " referenced for group " + groupName.strip() + ", but that group not listed."
+                    permissions[permissionsUser.strip()] = groupNames.strip()
+            permissionsFile.close()
+
 clientSecretData = {"web":{"client_id":""}}
+# Open and read client_secret.json containing the Google authentication client secrets.
 try:
-  clientSecretFile = open("client_secret.json")
+    clientSecretFile = open("client_secret.json")
 except OSError:
-  configError = "Configuration error - Couldn't load file client_secret.json."
+    configError = "Configuration error - Couldn't load file client_secret.json."
 else:
-  clientSecretData = json.load(clientSecretFile)
-  clientSecretFile.close()
-
-groups = {}
-if os.path.isdir("groups"):
-    for group in os.listdir("groups"):
-        groupName = group.rsplit(".", 1)[0]
-        groups[groupName] = []
-        groupFile = open("groups" + os.sep + group)
-        for groupLine in groupFile.readlines():
-            groups[groupName].append(groupLine.strip())
-        groupFile.close()
-
-# Open and read the permissions.txt file and any group lists found in the "groups" folder.
-permissions = {}
-if os.path.isfile("permissions.txt"):
-  try:
-    permissionsFile = open("permissions.txt")
-  except OSError:
-    configError = "Configuration error - Couldn't load file permissions.txt."
-  else:
-    for permissionsLine in permissionsFile.readlines():
-      permissionsSplit = permissionsLine.split(":")
-      for permissionsUser in permissionsSplit[0].split(","):
-        groupNames = permissionsSplit[1].strip()
-        for groupName in groupNames.split(","):
-          if not groupName.strip() in groups.keys():
-            configError = "Configuration error - User " + permissionsUser.strip() + " referenced for group " + groupName.strip() + ", but that group not listed."
-        permissions[permissionsUser.strip()] = groupNames.strip()
-  permissionsFile.close()
+    clientSecretData = json.load(clientSecretFile)
+    clientSecretFile.close()
 
 appData = {
-  "name":"Password Changer",
-  "description":"A utility to change your account password.",
-  "keywords":"password, change",
-  "author":"David Hicks",
-  "configError":configError,
-  "GoogleClientID":clientSecretData["web"]["client_id"]
+    "name":"Password Changer",
+    "description":"A utility to change your account password.",
+    "keywords":"password, change",
+    "author":"David Hicks",
+    "configError":configError,
+    "GoogleClientID":clientSecretData["web"]["client_id"]
 }
+
+refreshData()
 
 # This is a single-page app, any user interface changes are made via calls to the API.
 @app.route("/")
 def index():
-  return flask.render_template("index.html", appData=appData)
+    return flask.render_template("index.html", appData=appData)
 
 # When the user completes the "Sign In With Google" workflow on the client side, this function gets called to confirm they have a valid login.
 @app.route("/api/verifyGoogleIDToken", methods=["POST"])
 def verifyGoogleIDToken():
-  googleIDToken = flask.request.values.get("googleIDToken", None)
-  try:
-    # See for further details: https://developers.google.com/identity/gsi/web/guides/verify-google-id-token
-    IDInfo = google.oauth2.id_token.verify_oauth2_token(googleIDToken, google.auth.transport.requests.Request(), clientSecretData["web"]["client_id"])
+    googleIDToken = flask.request.values.get("googleIDToken", None)
+    try:
+        # See for further details: https://developers.google.com/identity/gsi/web/guides/verify-google-id-token
+        IDInfo = google.oauth2.id_token.verify_oauth2_token(googleIDToken, google.auth.transport.requests.Request(), clientSecretData["web"]["client_id"])
         
-    # If the issuer isn't Google, there's a problem.
-    if IDInfo["iss"] not in ["accounts.google.com", "https://accounts.google.com"]:
-      raise ValueError("Wrong issuer.")
+        # If the issuer isn't Google, there's a problem.
+        if IDInfo["iss"] not in ["accounts.google.com", "https://accounts.google.com"]:
+            raise ValueError("Wrong issuer.")
             
-    # The aud value should match the client ID.
-    if not IDInfo["aud"] == clientSecretData["web"]["client_id"]:
-      raise ValueError("Mismatched client ID.")
-  except ValueError as e:
-    # Invalid token.
-    return "ERROR: " + repr(e)
-  # At this point, we've verified the Google login token. Generate and cache a login token for our client-side code to use.
-  loginToken = generateLoginToken({"emailAddress":IDInfo["email"], "loginType":"google"})
-  return loginToken + "," + IDInfo["email"]
+        # The aud value should match the client ID.
+        if not IDInfo["aud"] == clientSecretData["web"]["client_id"]:
+            raise ValueError("Mismatched client ID.")
+    except ValueError as e:
+        # Invalid token.
+        return "ERROR: " + repr(e)
+
+    # At this point, we've verified the Google login token. Generate and cache a login token for our client-side code to use.
+    loginToken = generateLoginToken({"emailAddress":IDInfo["email"], "loginType":"google"})
+    return loginToken + "," + IDInfo["email"]
 
 # Return a list of additional users, if any, the current user can set the passwords of.
 @app.route("/api/getAdditionalUsers", methods=["POST"])
 def getAdditionalUsers():
-  loginToken = flask.request.values.get("loginToken", None)
-  if loginToken == None:
-    return("ERROR: Missing login token.")
-  else:
-    userData = loginTokenCache.get(loginToken)
-    if userData:
-      if userData["emailAddress"] in permissions.keys():
-        result = {}
-        for groupName in permissions[userData["emailAddress"]].split(","):
-          for item in groups[groupName]:
-            result[item] = 1
-        return "[\"" + "\",\"".join(result.keys()) + "\"]"
+    loginToken = flask.request.values.get("loginToken", None)
+    if loginToken == None:
+        return("ERROR: Missing login token.")
     else:
-      return("ERROR: Invalid login token.")
-  return "[]"
+        userData = loginTokenCache.get(loginToken)
+        if userData:
+            if userData["emailAddress"] in permissions.keys():
+                result = {}
+                for groupName in permissions[userData["emailAddress"]].split(","):
+                    for item in groups[groupName]:
+                        result[item] = 1
+                return "[\"" + "\",\"".join(result.keys()) + "\"]"
+        else:
+            return("ERROR: Invalid login token.")
+    return "[]"
 
 # Set the user's own new password.
-@app.route("/api/setOwnPassword", methods=["POST"])
-def setOwnPassword():
-  newPassword = flask.request.values.get("newPassword", None)
-  return "Setting own new password: " + newPassword
+@app.route("/api/setPassword", methods=["POST"])
+def setPassword():
+    newPassword = flask.request.values.get("user", None)
+    newPassword = flask.request.values.get("newPassword", None)
+    return "New password set for user: " + user
 
 if __name__ == "__main__":
-  app.run(debug=True, port=8070, use_reloader=False)
+    app.run(debug=True, port=8070, use_reloader=False)
