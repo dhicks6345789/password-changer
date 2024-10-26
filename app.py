@@ -72,6 +72,7 @@ def refreshData():
                             configError = "Configuration error - User " + permissionsUser.strip() + " referenced for group " + groupName.strip() + ", but that group not listed."
                     permissions[permissionsUser.strip()] = groupNames.strip()
             permissionsFile.close()
+print("Bananas!")
 refreshData()
 
 clientSecretData = {"web":{"client_id":""}}
