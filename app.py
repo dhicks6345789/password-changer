@@ -129,6 +129,8 @@ def verifyGoogleIDToken():
 # Return a list of additional users, if any, the current user can set the passwords of.
 @app.route("/api/getAdditionalUsers", methods=["POST"])
 def getAdditionalUsers():
+    print(permissions)
+    print(groups)
     loginToken = flask.request.values.get("loginToken", None)
     if loginToken == None:
         return("ERROR: Missing login token.")
@@ -141,6 +143,7 @@ def getAdditionalUsers():
         for groupName in permissions[userData["emailAddress"]].split(","):
             for item in groups[groupName]:
                 result[item] = 1
+        print(result)
         return "[\"" + "\",\"".join(result.keys()) + "\"]"
     return "[]"
 
