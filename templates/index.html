@@ -52,6 +52,7 @@
         document.getElementById("errorMessageText").innerHTML = theErrorMessage;
       }
 
+      // Make the "changePassword" user interface block visitable, hide other blocks.
       function showChangePasswordBlock(theUserEmail) {
         document.getElementById("selectUserBlock").style.display = "none";
         document.getElementById("changePasswordBlock").style.display = "flex";
@@ -85,6 +86,7 @@
         }
       }
 
+      // Goes to the server to get the user's default password.
       function getDefaultPassword() {
         userPassword = document.getElementById("userPassword");
         userPassword.setAttribute("type", "text");
@@ -93,10 +95,15 @@
         document.getElementById("hidePassword").style.display = "inline";
       }
 
+      // Generates a new password for the user. Doesn't set it straight away, the user can review the password and change it / generate a new one if they want.
       function generateNewPassword() {
+        // Words used to generate passwords.
+        adjectives = ["Large","Small","Long","Short","Narrow","Deep","Flat","Whole","Low","High","Near","Far","Gone","Moving","Fast","Quick","Early","Late","Bright","Dark","Cloudy","Hot","Warm","Cool","Cold","Windy","Noisy","Loud","Quiet","Dry","Wet","Clear","Hard","Soft","Heavy","Light","Strong","Weak","Clean","Tidy","Dirty","Empty","Full","Thirsty","Hungry","Old","Fresh","Dead","Healthy","Sweet","Sour","Bitter","Salty","Good","Bad","Great","Useful","Cheap","Free","Strong","Weak","Able","Rich","Brave","Fine","Sad","Proud","Happy","Clever","Famous","Funny","Kind","Polite","Fair","Busy","Lazy","Lucky","Safe"];
+        nouns = ["Albatross","Antelope","Ant","Ape","Baboon","Badger","Bat","Bear","Beaver","Bee","Bird","Bittern","Boar","Buffalo","Caribou","Cat","Cow","Chicken","Coot","Crane","Crocodile","Crow","Deer","Dog","Dolphin","Dove","Duck","Eagle","Eel","Elephant","Elk","Falcon","Ferret","Fish","Fox","Frog","Goose","Giraffe","Gnat","Goat","Gorilla","Grouse","Hawk","Heron","Hornet","Horse","Hyena","Ibex","Jay","Jellyfish","Kangaroo","Kitten","Lark","Lion","Mackerel","Magpie","Mouse","Mole","Monkey","Moose","Owl","Oyster","Parrot","Penguin","Pheasant","Pig","Quail","Rabbit","Raccoon","Rat","Raven","Rook","Seagull","Seal","Sheep","Snake","Sparrow","Squirrel","Stork","Swan","Tiger","Toad","Trout","Turkey","Turtle","Vulture","Weasel","Whale","Wolf","Wombat","Wren","Zebra"];
+        
         userPassword = document.getElementById("userPassword");
         userPassword.setAttribute("type", "text");
-        userPassword.value = "NewPassword!";
+        userPassword.value = adjectives[Math.floor(Math.random() * adjectives.length)] + nouns[Math.floor(Math.random() * nouns.length)] + Math.floor(Math.random() * 110) - 10);
         document.getElementById("showPassword").style.display = "none";
         document.getElementById("hidePassword").style.display = "inline";
       }
