@@ -72,6 +72,7 @@ def refreshData():
                             configError = "Configuration error - User " + permissionsUser.strip() + " referenced for group " + groupName.strip() + ", but that group not listed."
                     permissions[permissionsUser.strip()] = groupNames.strip()
             permissionsFile.close()
+refreshData()
 
 clientSecretData = {"web":{"client_id":""}}
 # Open and read client_secret.json containing the Google authentication client secrets.
@@ -91,8 +92,6 @@ appData = {
     "configError":configError,
     "GoogleClientID":clientSecretData["web"]["client_id"]
 }
-
-refreshData()
 
 # This is a single-page app, any user interface changes are made via calls to the API.
 @app.route("/")
