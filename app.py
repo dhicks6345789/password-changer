@@ -9,6 +9,9 @@ import flask
 # The Flask-Caching in-memory store, used to store values (i.e. login tokens) between executions of this script.
 import flask_caching
 
+# The Flask-APSchedualr module, used for schedualing period tasks.
+import flask_apscheduler
+
 # Libraries for handling Google OAuth (i.e. user sign-in) authentication flow.
 import google.oauth2.id_token
 import google.auth.transport.requests
@@ -25,10 +28,20 @@ app.config.from_mapping({
     # Set values for the Flask-Caching module. Value timeout (i.e. timeout for user sessions with no activity) is 10 minutes.
     "CACHE_TYPE": "FileSystemCache",
     "CACHE_DEFAULT_TIMEOUT": 600,
-    "CACHE_DIR": "cache"
+    "CACHE_DIR": "cache",
+    "SCHEDULER_API_ENABLED": False
 })
 # Instantiate the cache object.
 loginTokenCache = flask_caching.Cache(app)
+
+# Initialize scheduler
+scheduler = flask_apscheduler.APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+
+@scheduler.task("interval", id="refreshData", seconds=30, misfire_grace_time=900)
+def refreshData():
+    print("Refreshing data...")
 
 # Open and read client_secret.json containing the Google authentication client secrets.
 configError = ""
@@ -120,6 +133,8 @@ def getAdditionalUsers():
           for item in groups[groupName]:
             result[item] = 1
         return "[\"" + "\",\"".join(result.keys()) + "\"]"
+    else:
+      return("ERROR: Invalid login token.")
   return "[]"
 
 # Set the user's own new password.
