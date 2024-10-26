@@ -144,4 +144,4 @@ def setOwnPassword():
   return "Setting own new password: " + newPassword
 
 if __name__ == "__main__":
-  app.run(debug=True, port=8070)
+  app.run(debug=True, port=8070, use_reloader=False)
