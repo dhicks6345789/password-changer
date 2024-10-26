@@ -103,7 +103,7 @@
         
         userPassword = document.getElementById("userPassword");
         userPassword.setAttribute("type", "text");
-        userPassword.value = adjectives[Math.floor(Math.random() * adjectives.length)] + nouns[Math.floor(Math.random() * nouns.length)] + (Math.floor(Math.random() * 110) - 10);
+        userPassword.value = adjectives[Math.floor(Math.random() * adjectives.length)] + nouns[Math.floor(Math.random() * nouns.length)] + (Math.floor(Math.random() * 90) + 10);
         document.getElementById("showPassword").style.display = "none";
         document.getElementById("hidePassword").style.display = "inline";
       }
