@@ -25,6 +25,7 @@ rem Make sure the Python module requirements are installed in the venv.
 if not exist "C:\Program Files\PasswordChanger\venv\Lib\site-packages\flask" (
   venv\Scripts\pip.exe install flask
   venv\Scripts\pip.exe install flask-caching
+  venv\Scripts\pip.exe install flask-apscheduler
 )
 if not exist "C:\Program Files\PasswordChanger\venv\Lib\site-packages\waitress" (
   venv\Scripts\pip.exe install waitress
