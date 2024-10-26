@@ -84,6 +84,22 @@
           document.getElementById("hidePassword").style.display = "none";
         }
       }
+
+      function getDefaultPassword() {
+        userPassword = document.getElementById("userPassword");
+        userPassword.setAttribute("type", "text");
+        userPassword.value = "DefaultPassword!";
+        document.getElementById("showPassword").style.display = "none";
+        document.getElementById("hidePassword").style.display = "inline";
+      }
+
+      function generateNewPassword() {
+        userPassword = document.getElementById("userPassword");
+        userPassword.setAttribute("type", "text");
+        userPassword.value = "NewPassword!";
+        document.getElementById("showPassword").style.display = "none";
+        document.getElementById("hidePassword").style.display = "inline";
+      }
       
       // A function called when the user completes the "Login With Google" workflow. That gives us a credntial token which we then need to send back
       // to our server via an API call to validate. If valid, we'll receive a login token, otherwise we'll receive an error message.
@@ -157,11 +173,11 @@
             <div class="row justify-content-center">
               <div class="col-2"></div>
               <div class="col-3">
-                <button type="button" class="btn btn-success">Get Default Password</button>
+                <button type="button" class="btn btn-success" onclick="getDefaultPassword()">Get Default Password</button>
               </div>
               <div class="col-2"></div>
               <div class="col-3">
-                <button type="button" class="btn btn-success">Generate New Password</button>
+                <button type="button" class="btn btn-success" onclick="generateNewPassword()">Generate New Password</button>
               </div>
               <div class="col-2"></div>
             </div>
