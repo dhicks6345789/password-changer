@@ -9,18 +9,12 @@ import flask
 # The Flask-Caching in-memory store, used to store values (i.e. login tokens) between executions of this script.
 import flask_caching
 
-# The Flask-APSchedualr module, used for schedualing period tasks.
+# The Flask-APScheduler module, used for schedualing periodic tasks.
 import flask_apscheduler
 
 # Libraries for handling Google OAuth (i.e. user sign-in) authentication flow.
 import google.oauth2.id_token
 import google.auth.transport.requests
-
-# Helper function to generate and cache a login token for a validated user.
-def generateLoginToken(userData):
-    loginToken = str(uuid.uuid4())
-    loginTokenCache.set(loginToken, userData)
-    return(loginToken)
 
 # Instantiate the Flask app, set configuration values.
 app = flask.Flask(__name__)
@@ -33,6 +27,25 @@ app.config.from_mapping({
 })
 # Instantiate the cache object.
 loginTokenCache = flask_caching.Cache(app)
+
+clientSecretData = {"web":{"client_id":""}}
+# Open and read client_secret.json containing the Google authentication client secrets.
+try:
+    clientSecretFile = open("client_secret.json")
+except OSError:
+    configError = "Configuration error - Couldn't load file client_secret.json."
+else:
+    clientSecretData = json.load(clientSecretFile)
+    clientSecretFile.close()
+
+appData = {
+    "name":"Password Changer",
+    "description":"A utility to change your account password.",
+    "keywords":"password, change",
+    "author":"David Hicks",
+    "configError":configError,
+    "GoogleClientID":clientSecretData["web"]["client_id"]
+}
 
 # Initialize scheduler
 scheduler = flask_apscheduler.APScheduler()
@@ -84,24 +97,24 @@ def refreshData():
             permissionsFile.close()
 refreshData()
 
-clientSecretData = {"web":{"client_id":""}}
-# Open and read client_secret.json containing the Google authentication client secrets.
-try:
-    clientSecretFile = open("client_secret.json")
-except OSError:
-    configError = "Configuration error - Couldn't load file client_secret.json."
-else:
-    clientSecretData = json.load(clientSecretFile)
-    clientSecretFile.close()
+# Helper function to generate and cache a login token for a validated user.
+def generateLoginToken(userData):
+    loginToken = str(uuid.uuid4())
+    loginTokenCache.set(loginToken, userData)
+    return(loginToken)
 
-appData = {
-    "name":"Password Changer",
-    "description":"A utility to change your account password.",
-    "keywords":"password, change",
-    "author":"David Hicks",
-    "configError":configError,
-    "GoogleClientID":clientSecretData["web"]["client_id"]
-}
+def checkRequiredValue(theValues, theValueName):
+    result = theValues.get(theValueName, None)
+    if result == None:
+        raise ValueError("Missing value - " + theValueName + ".")
+    return result
+
+def checkLoginToken(theValues):
+    loginToken = checkRequiredValue(theValues, "loginToken")
+    userData = loginTokenCache.get(loginToken)
+    if not userData:
+        raise ValueError("Invalid login token.")
+    return loginToken
 
 # This is a single-page app, any user interface changes are made via calls to the API.
 @app.route("/")
@@ -134,42 +147,29 @@ def verifyGoogleIDToken():
 # Return a list of additional users, if any, the current user can set the passwords of.
 @app.route("/api/getAdditionalUsers", methods=["POST"])
 def getAdditionalUsers():
-    print(permissions)
-    print(groups)
-    loginToken = flask.request.values.get("loginToken", None)
-    if loginToken == None:
-        return("ERROR: Missing login token.")
-    userData = loginTokenCache.get(loginToken)
-    if not userData:
-        return("ERROR: Invalid login token.")
+    try:
+        loginToken = checkLoginToken(flask.request.values)
+    except ValueError as e:
+        return "ERROR: " + repr(e)
     
     if userData["emailAddress"] in permissions.keys():
         result = {}
         for groupName in permissions[userData["emailAddress"]].split(","):
             for item in groups[groupName]:
                 result[item] = 1
-        print(result)
         return "[\"" + "\",\"".join(result.keys()) + "\"]"
     return "[]"
 
 # Set the given user's password. Make sure the current user (which might be different) has permissions to set that password first.
 @app.route("/api/setPassword", methods=["POST"])
 def setPassword():
-    loginToken = flask.request.values.get("loginToken", None)
-    if loginToken == None:
-        return("ERROR: Missing login token.")
-    userData = loginTokenCache.get(loginToken)
-    if not userData:
-        return("ERROR: Invalid login token.")
+    try:
+        loginToken = checkLoginToken(flask.request.values)
+        user = checkRequiredValue(flask.request.values, "user")
+        newPassword = checkRequiredValue(flask.request.values, "newPassword")
+    except ValueError as e:
+        return "ERROR: " + repr(e)
     
-    user = flask.request.values.get("user", None)
-    if user == None:
-        return("ERROR: Missing value: user.")
-        
-    newPassword = flask.request.values.get("newPassword", None)
-    if newPassword == None:
-        return("ERROR: Missing value: newPassword.")
-        
     if user in defaultPasswords.keys():
         print("Setting password...")
         # To do: set password here.
@@ -179,17 +179,12 @@ def setPassword():
 # Get the given user's default password. Make sure the current user (which might be different) has permissions to see that password first.
 @app.route("/api/getDefaultPassword", methods=["POST"])
 def getDefaultPassword():
-    loginToken = flask.request.values.get("loginToken", None)
-    if loginToken == None:
-        return("ERROR: Missing login token.")
-    userData = loginTokenCache.get(loginToken)
-    if not userData:
-        return("ERROR: Invalid login token.")
+    try:
+        loginToken = checkLoginToken(flask.request.values)
+        user = checkRequiredValue(flask.request.values, "user")
+    except ValueError as e:
+        return "ERROR: " + repr(e)
     
-    user = flask.request.values.get("user", None)
-    if user == None:
-        return("ERROR: Missing value: user.")
-        
     if user in defaultPasswords.keys():
         #if userData["emailAddress"] in permissions.keys():
         return defaultPasswords[user]
