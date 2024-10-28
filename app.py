@@ -43,7 +43,6 @@ appData = {
     "description":"A utility to change your account password.",
     "keywords":"password, change",
     "author":"David Hicks",
-    "configError":configError,
     "GoogleClientID":clientSecretData["web"]["client_id"]
 }
 
@@ -101,6 +100,7 @@ def refreshData():
                     permissions[permissionsUser.strip()] = groupNames.strip()
             permissionsFile.close()
 refreshData()
+appData["configError"] = configError
 
 
 
