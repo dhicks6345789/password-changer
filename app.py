@@ -222,7 +222,7 @@ def setPassword():
     
     if user in defaultPasswords.keys():
         print("To do: set password code goes here...")
-    return "New password set for user: " + userData["emailAddress"]
+    return "New password set for user: " + user
 
 if __name__ == "__main__":
     app.run(debug=True, port=8070, use_reloader=False)
