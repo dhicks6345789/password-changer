@@ -3,13 +3,11 @@ import os
 import json
 import uuid
 
-# The Flask web application framework.
+# The Flask web application framework...
 import flask
-
-# The Flask-Caching in-memory store, used to store values (i.e. login tokens) between executions of this script.
+# ...with the Flask-Caching value store, used to login tokens...
 import flask_caching
-
-# The Flask-APScheduler module, used for schedualing periodic tasks.
+# ...and the Flask-APScheduler module, used for schedualing periodic tasks.
 import flask_apscheduler
 
 # Libraries for handling Google OAuth (i.e. user sign-in) authentication flow.
@@ -25,11 +23,12 @@ app.config.from_mapping({
     "CACHE_DIR": "cache",
     "SCHEDULER_API_ENABLED": False
 })
+
 # Instantiate the cache object.
 loginTokenCache = flask_caching.Cache(app)
 
-clientSecretData = {"web":{"client_id":""}}
 # Open and read client_secret.json containing the Google authentication client secrets.
+clientSecretData = {"web":{"client_id":""}}
 try:
     clientSecretFile = open("client_secret.json")
 except OSError:
@@ -38,6 +37,7 @@ else:
     clientSecretData = json.load(clientSecretFile)
     clientSecretFile.close()
 
+# Application details, used to render the HTML page.
 appData = {
     "name":"Password Changer",
     "description":"A utility to change your account password.",
@@ -47,16 +47,21 @@ appData = {
     "GoogleClientID":clientSecretData["web"]["client_id"]
 }
 
-# Initialize scheduler
+# Initialize the scheduler.
 scheduler = flask_apscheduler.APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 
+
+
+# --- Periodic functions. ---
+
+# We run the "refreshData" function periodically to check and see if any permissions / group lists have been updated.
 groups = {}
 permissions = {}
 configError = ""
 defaultPasswords = {}
-@scheduler.task("interval", id="refreshData", seconds=30, misfire_grace_time=900)
+@scheduler.task("interval", id="refreshData", seconds=300, misfire_grace_time=900)
 def refreshData():
     global groups
     global permissions
@@ -97,24 +102,34 @@ def refreshData():
             permissionsFile.close()
 refreshData()
 
+
+
+# --- Local-only helper functions. ---
+
 # Helper function to generate and cache a login token for a validated user.
 def generateLoginToken(userData):
     loginToken = str(uuid.uuid4())
     loginTokenCache.set(loginToken, userData)
     return(loginToken)
 
+# Helper function to check a value exists in a given set of Flask values. Throws a ValueError if not.
 def checkRequiredValue(theValues, theValueName):
     result = theValues.get(theValueName, None)
     if result == None:
         raise ValueError("Missing value - " + theValueName + ".")
     return result
 
+# Helper function to check the "loginToken" value both exists and points at a valid login session. Throws a ValueError if there's a problem.
 def checkLoginToken(theValues):
     loginToken = checkRequiredValue(theValues, "loginToken")
     userData = loginTokenCache.get(loginToken)
     if not userData:
         raise ValueError("Invalid login token.")
     return loginToken
+
+
+
+# API functions - these are the functions that can be called by the front-end.
 
 # This is a single-page app, any user interface changes are made via calls to the API.
 @app.route("/")
@@ -160,6 +175,20 @@ def getAdditionalUsers():
         return "[\"" + "\",\"".join(result.keys()) + "\"]"
     return "[]"
 
+# Get the given user's default password. Make sure the current user (which might be different) has permissions to see that password first.
+@app.route("/api/getDefaultPassword", methods=["POST"])
+def getDefaultPassword():
+    try:
+        loginToken = checkLoginToken(flask.request.values)
+        user = checkRequiredValue(flask.request.values, "user")
+    except ValueError as e:
+        return "ERROR: " + repr(e)
+    
+    if user in defaultPasswords.keys():
+        #if userData["emailAddress"] in permissions.keys():
+        return defaultPasswords[user]
+    return ""
+
 # Set the given user's password. Make sure the current user (which might be different) has permissions to set that password first.
 @app.route("/api/setPassword", methods=["POST"])
 def setPassword():
@@ -175,20 +204,6 @@ def setPassword():
         # To do: set password here.
         #if userData["emailAddress"] in permissions.keys():
     return "New password set for user: " + user
-
-# Get the given user's default password. Make sure the current user (which might be different) has permissions to see that password first.
-@app.route("/api/getDefaultPassword", methods=["POST"])
-def getDefaultPassword():
-    try:
-        loginToken = checkLoginToken(flask.request.values)
-        user = checkRequiredValue(flask.request.values, "user")
-    except ValueError as e:
-        return "ERROR: " + repr(e)
-    
-    if user in defaultPasswords.keys():
-        #if userData["emailAddress"] in permissions.keys():
-        return defaultPasswords[user]
-    return ""
 
 if __name__ == "__main__":
     app.run(debug=True, port=8070, use_reloader=False)
