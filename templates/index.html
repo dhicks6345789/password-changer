@@ -148,11 +148,15 @@
             console.log("Submit password...");
           }); 
         }
+        mainContainerBlocks = document.getElementById("mainContainer").children
+        for (pl = 0; pl < mainContainerBlocks.length; pl = pl + 1) {
+          console.log(mainContainerBlocks.id);
+        }
       }
     </script>
   </head>
   <body onload="doPageLoad()">
-    <main role="main" class="container">
+    <main id="mainContainer" role="main" class="container">
       <div id="errorMessageBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
         <h1>ERROR:</h1>
         <h2 id="errorMessageText"></h2>
