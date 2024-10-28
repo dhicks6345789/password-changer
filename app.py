@@ -135,7 +135,7 @@ def checkPermissions(theCurrentUser, theOtherUser):
             if theOtherUser in group.strip():
                 userFound = True
     if not userFound:
-        raise ValueError("ERROR: User " + theCurrentUser + " does not have permissions for " + theOtherUser)
+        raise ValueError("User " + theCurrentUser + " does not have permissions for " + theOtherUser)
         
 # API functions - these are the functions that can be called by the front-end.
 
@@ -161,7 +161,7 @@ def verifyGoogleIDToken():
             raise ValueError("Mismatched client ID.")
     except ValueError as e:
         # Invalid token.
-        return "ERROR: " + repr(e)
+        return "ERROR: " + str(e)
 
     # At this point, we've verified the Google login token. Generate and cache a login token for our client-side code to use.
     loginToken = generateLoginToken({"emailAddress":IDInfo["email"], "loginType":"google"})
@@ -173,7 +173,7 @@ def keepAlive():
     try:
         userData = checkLoginToken(flask.request.values)
     except ValueError as e:
-        return "ERROR: " + repr(e)
+        return "ERROR: " + str(e)
     return "OK"
 
 # Return a list of additional users, if any, the current user can set the passwords of.
@@ -182,7 +182,7 @@ def getAdditionalUsers():
     try:
         userData = checkLoginToken(flask.request.values)
     except ValueError as e:
-        return "ERROR: " + repr(e)
+        return "ERROR: " + str(e)
     
     if userData["emailAddress"] in permissions.keys():
         result = {}
@@ -200,7 +200,7 @@ def getDefaultPassword():
         user = checkRequiredValue(flask.request.values, "user")
         checkPermissions(userData["emailAddress"], user)
     except ValueError as e:
-        return "ERROR: " + repr(e)
+        return "ERROR: " + str(e)
     
     if user in defaultPasswords.keys():
         return defaultPasswords[user]
@@ -216,7 +216,7 @@ def setPassword():
         checkPermissions(userData["emailAddress"], user)
         newPassword = checkRequiredValue(flask.request.values, "newPassword")
     except ValueError as e:
-        return "ERROR: " + repr(e)
+        return "ERROR: " + str(e)
     
     if user in defaultPasswords.keys():
         print("To do: set password code goes here...")
