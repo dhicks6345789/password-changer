@@ -164,7 +164,7 @@
         } else {
           document.getElementById("setPasswordForm").addEventListener('submit', function(event) {
             event.preventDefault();
-            doAPICall("setPassword", {"loginToken":loginToken, "user":userEmail}, function(theAPIResponse) {
+            doAPICall("setPassword", {"loginToken":loginToken, "user":userEmail, "newPassword":document.getElementById("userPassword").value}, function(theAPIResponse) {
               showBlock("passwordSetBlock");
               document.getElementById("passwordSetHeading").innerHTML = "Password set for user: " + userEmail;
               document.getElementById("passwordSetMessage").innerHTML = theAPIResponse;
