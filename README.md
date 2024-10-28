@@ -10,6 +10,16 @@ Password Changer is intended for installation by the systems administrator of a 
 
 This project might be a handy starting point for anyone looking for an example single-page Flask app complete with login-with-Google functionality.
 
+## Requirements
+
+You will need a "server" machine of some sort to run Password Changer on. This can be your own hardware on your local network or a server VM somewhere away on a hosting server. It doesn't need much by way of resources - even the smallest VM available on your service should be fine, and it can go on a VM shared with other services.
+
+You will need to have access to the Google Workspace management console to be able to set up a Google OAuth 2 project.
+
+How, exactly, you actually set passwords is up to you, but by default we use the excellent [GAM](https://github.com/GAM-team/GAM) project, which you will need to have set up and available on the same machine you plan to install Password Changer on.
+
+Password Changer is designed to sit behind a reverse proxy server, something that handles HTTPS. This could be an instance of [Apache](https://httpd.apache.org/), [nginx](https://nginx.org/), [Caddy](https://caddyserver.com/) or similar, or an ingress service such as [Cloudflare Tunnel](https://www.cloudflare.com/en-gb/products/tunnel/) or [ngrok](https://ngrok.com/).
+
 ## Implementation
 
 Password Changer is written in [Python](https://www.python.org/) using the [Flask](https://flask.palletsprojects.com/en/stable/) framework. The frontend uses [Bootstrap 5](https://getbootstrap.com/). It is implemented as a single-page app - there is just the one HTML page to serve.
@@ -17,8 +27,6 @@ Password Changer is written in [Python](https://www.python.org/) using the [Flas
 As a Python / Flask project, it is quite simple. There is the one Python file and one HTML file, that's pretty much it. Bootstrap library files are loaded from a CDN. Login tokens are passed to the API by JavaScript, there are no cookies used.
 
 Password Changer can be run in test mode straight from the command line. An installation script is included for Windows that installs and configures the Waitress WSGI server as a system service, hopefully meaning the project is ready to run in production situations.
-
-Password Changer is designed to sit behind a reverse proxy server, something that handles HTTPS. This could be an instance of [Apache](https://httpd.apache.org/), [nginx](https://nginx.org/), [Caddy](https://caddyserver.com/) or similar, or an ingress service such as [Cloudflare Tunnel](https://www.cloudflare.com/en-gb/products/tunnel/) or [ngrok](https://ngrok.com/).
 
 ## Installation
 
