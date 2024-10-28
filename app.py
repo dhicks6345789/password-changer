@@ -135,7 +135,7 @@ def checkPermissions(theCurrentUser, theOtherUser):
             if theOtherUser in group.strip():
                 userFound = True
     if not userFound:
-        raise ValueError("ERROR: User " + userData["emailAddress"] + " does not have permissions for " + user)
+        raise ValueError("ERROR: User " + theCurrentUser + " does not have permissions for " + theOtherUser)
         
 # API functions - these are the functions that can be called by the front-end.
 
