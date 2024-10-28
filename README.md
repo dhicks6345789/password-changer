@@ -1,6 +1,6 @@
 # Password Changer
 
-A web-based (Python / Flask) password changer utility. Allows a user (authenticated via their Google account) to change their account password. Also allows some users, depending on permissions, to change the passwords for some other users.
+A web-based (Python / [Flask](https://flask.palletsprojects.com/en/stable/)) password changer utility. Allows a user (authenticated via their Google account) to change their account password. Also allows some users, depending on permissions, to change the passwords for some other users.
 
 The backend can be modified to change passwords for other accounts at the same time, thus allowing for passwords to be kept in sync with the Google account.
 
@@ -12,17 +12,21 @@ This project might be a handy starting point for anyone looking for an example s
 
 ## Implementation
 
-Password Changer is written in Python using the Flask framework. The frontend uses Bootstrap 5. It is implemented as a single-page app - there is just the one HTML page to serve.
+Password Changer is written in [Python](https://www.python.org/) using the [Flask](https://flask.palletsprojects.com/en/stable/) framework. The frontend uses [Bootstrap 5](https://getbootstrap.com/). It is implemented as a single-page app - there is just the one HTML page to serve.
 
 As a Python / Flask project, it is quite simple. There is the one Python file and one HTML file, that's pretty much it. Bootstrap library files are loaded from a CDN. Login tokens are passed to the API by JavaScript, there are no cookies used.
 
-Password Changer can, of course, be run in test mode straight from the command line. An installation script is included for Windows that installs and configures the Waitress WSGI server as a system service, hopefully meaning the project is ready to run in production situations.
+Password Changer can be run in test mode straight from the command line. An installation script is included for Windows that installs and configures the Waitress WSGI server as a system service, hopefully meaning the project is ready to run in production situations.
 
-Password Changer is designed to sit behind a reverse proxy server, something that handles HTTPS. This could be an instance of Apache, Nginx, Caddy or similar, or an ingress service such as Cloudflare or NGrok.
+Password Changer is designed to sit behind a reverse proxy server, something that handles HTTPS. This could be an instance of [Apache](https://httpd.apache.org/), [nginx](https://nginx.org/), [Caddy](https://caddyserver.com/) or similar, or an ingress service such as [Cloudflare Tunnel](https://www.cloudflare.com/en-gb/products/tunnel/) or [ngrok](https://ngrok.com/).
 
 ## Installation
 
 Password Changer is intended to be run on some kind of server, although there is no specific requirement for a "server" OS, it should work on pretty much any system you can run Python on.
+
+You will need a working [Python](https://www.python.org/) environment on your machine. Python is included in most Linux distributions these days, and is simple enough to [install on Windows](https://www.python.org/downloads/windows/).
+
+Note that the installation script for Password Changer sets up and runs with a Python Virtual Environment ([venv](https://docs.python.org/3/library/venv.html), so any Python packages installed will be in their own self-contained setup and shouldn't affect (or even be seen by) the rest of your system.
 
 Clone / download the repository from Github. Change to the folder where the repository is stored.
 
@@ -36,6 +40,10 @@ If you want to run the Flask application in test / debug mode, you can go to a l
 cd "C:\Program Files\Password Changer"
 cls & net stop PasswordChanger & venv\Scripts\python.exe app.py
 ```
+
+### On Linux
+
+Run install.sh.
 
 ## Additional Files / Applications
 
@@ -67,4 +75,8 @@ Hopefully, the above format is simple enough to either manually edit or automati
 
 ### Reverse Proxy / Ingress Service
 
-Installing Password Changer will give you a Python / Flask project served by Waitress on your installation machine on port 8070 via HTTP (not HTTPS). You will need to find some way of making the application available to the wider network / Internet - importantly, that service will need to handle HTTPS. The default configuration should let only local HTTP connections through, so a reverse proxy / ingress service running on the same machine is going to be needed.
+Installing Password Changer will give you a Python / Flask project served by Waitress on your installation machine on port 8070 via HTTP (not HTTPS). You will need to find some way of making the application available to the wider network / Internet - importantly, that service will need to handle HTTPS. The default configuration should let only local HTTP connections through, so a reverse proxy / ingress service running on the same machine is going to be needed. This could be an instance of [Apache](https://httpd.apache.org/), [nginx](https://nginx.org/), [Caddy](https://caddyserver.com/) or similar, or an ingress service such as [Cloudflare Tunnel](https://www.cloudflare.com/en-gb/products/tunnel/) or [ngrok](https://ngrok.com/).
+
+#### Cloudflare Tunnel
+
+Password Changer was developed using Cloudflare Tunnel for handling HTTPS. Simply install the Cloudflare Tunnel client on your machine (the same one as Password Changer is on) and point it at `http://localhost:8070`.
