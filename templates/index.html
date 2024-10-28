@@ -165,6 +165,11 @@
           theAPIResponseSplit = theAPIResponse.split(",");
           loginToken = theAPIResponseSplit[0];
           userEmail = theAPIResponseSplit[1];
+          // Call the "keep alive" API function to stop the login token expiring.
+          setInterval(function() {
+            doAPICall("keepAlive", {"loginToken":loginToken}, function(theAPIResponse) {
+            });
+          }, 250000);
           showSelectUserBlock();
         });
       }
