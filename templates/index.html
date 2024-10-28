@@ -23,11 +23,15 @@
       var userList = [];
       
       // A function to do an api call to the server.
-      function doAPICall(theMethod, theParams, theSuccessFunction, callMethod="GET") {
+      function doAPICall(theMethod, theParams, theSuccessFunction, callMethod="POST") {
         var apiCall = new XMLHttpRequest();
         apiCall.onreadystatechange = function() {
           if (apiCall.readyState == 4 && apiCall.status == 200) {
-            theSuccessFunction(apiCall.responseText);
+            if (apiCall.responseText.startsWith("ERROR:")) {
+              showErrorMessage(apiCall.responseText.slice(7));
+            } else {
+              theSuccessFunction(apiCall.responseText);
+            }
           }
         }
         URLEncodedParams = "";
@@ -89,15 +93,11 @@
       // Goes to the server to get the user's default password, sets that as the current password value in the input box and makes sure it is visible to the user. Doesn't set it straight away, the user can review the password and change it / generate a new one if they want.
       function getDefaultPassword() {
         doAPICall("getDefaultPassword", {"loginToken":loginToken, "user":"bananas"}, function(theAPIResponse) {
-          if (theAPIResponse.startsWith("ERROR:")) {
-            showErrorMessage(theAPIResponse.slice(7));
-          } else {
-            if (theAPIResponse != "") {
-              userPassword.setAttribute("type", "text");
-              userPassword.value = theAPIResponse;
-              document.getElementById("showPassword").style.display = "none";
-              document.getElementById("hidePassword").style.display = "inline";
-            }
+          if (theAPIResponse != "") {
+            userPassword.setAttribute("type", "text");
+            userPassword.value = theAPIResponse;
+            document.getElementById("showPassword").style.display = "none";
+            document.getElementById("hidePassword").style.display = "inline";
           }
         });
       }
@@ -119,26 +119,22 @@
       // to our server via an API call to validate. If valid, we'll receive a login token, otherwise we'll receive an error message.
       function handleGoogleCredentialResponse(theGoogleResponse) {
         doAPICall("verifyGoogleIDToken", {"googleIDToken":theGoogleResponse.credential}, function(theAPIResponse) {
-          if (theAPIResponse.startsWith("ERROR:")) {
-            showErrorMessage(theAPIResponse.slice(7));
-          } else {
-            document.getElementById("googleLoginBlock").style.display = "none";
-            theAPIResponseSplit = theAPIResponse.split(",");
-            loginToken = theAPIResponseSplit[0];
-            userEmail = theAPIResponseSplit[1];
-            doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
-              userList = JSON.parse(theAPIResponse);
-              if (userList == []) {
-                // User can't change passwords for other users, go straight to the change-my-own-password dialog.
-                showChangePasswordBlock(userEmail);
-              } else {
-                // User can change passwords for some other users, populate and display that list of users to select from.
-                document.getElementById("selectUserBlock").style.display = "flex";
-                populateUserList();
-              }
-            }, "POST");
-          }
-        }, "POST");
+          document.getElementById("googleLoginBlock").style.display = "none";
+          theAPIResponseSplit = theAPIResponse.split(",");
+          loginToken = theAPIResponseSplit[0];
+          userEmail = theAPIResponseSplit[1];
+          doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
+            userList = JSON.parse(theAPIResponse);
+            if (userList == []) {
+              // User can't change passwords for other users, go straight to the change-my-own-password dialog.
+              showChangePasswordBlock(userEmail);
+            } else {
+              // User can change passwords for some other users, populate and display that list of users to select from.
+              document.getElementById("selectUserBlock").style.display = "flex";
+              populateUserList();
+            }
+          });
+        });
       }
       
       // The function called when the page is fully loaded and ready to display.
