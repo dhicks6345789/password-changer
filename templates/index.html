@@ -22,9 +22,12 @@
       var loginToken = "";
       // The user email address, also returned after a succesful login-with-Google.
       var userEmail = "";
+      // The list of users for the current user to select from.
       var userList = [];
       // A list of user interface "blocks".
       var blocks = [];
+      // The default password for the user who's password is to be changed.
+      var defaultPassword = ""
       
       // A function to do an api call to the server.
       function doAPICall(theMethod, theParams, theSuccessFunction, callMethod="POST") {
@@ -53,6 +56,7 @@
         }
       }
 
+      // Shows the given user interface "block" section, hides all the others.
       function showBlock(theBlock) {
         for (blockNum = 0; blockNum < blocks.length; blockNum = blockNum + 1) {
           if (blocks[blockNum] == theBlock) {
@@ -63,7 +67,7 @@
         }
       }
       
-      // A function to display an error message for the end user.
+      // Display an error message for the end user.
       function showErrorMessage(theErrorMessage) {
         showBlock("errorMessageBlock");
         document.getElementById("errorMessageText").innerHTML = theErrorMessage;
@@ -73,6 +77,14 @@
       function showChangePasswordBlock(theUserEmail) {
         showBlock("changePasswordBlock");
         document.getElementById("newPasswordUser").innerHTML = "Enter new password for user: " + theUserEmail;
+        doAPICall("getDefaultPassword", {"loginToken":loginToken, "user":theUserEmail}, function(theAPIResponse) {
+          if (theAPIResponse == "") {
+            document.getElementById("showDefaultPasswordButton").disabled = true;
+          } else {
+            defaultPassword = theAPIResponse;
+            document.getElementById("showDefaultPasswordButton").disabled = false;
+          }
+        });
       }
 
       // A function to populate the list-of-users.
@@ -103,15 +115,11 @@
       }
 
       // Goes to the server to get the user's default password, sets that as the current password value in the input box and makes sure it is visible to the user. Doesn't set it straight away, the user can review the password and change it / generate a new one if they want.
-      function getDefaultPassword() {
-        doAPICall("getDefaultPassword", {"loginToken":loginToken, "user":"bananas"}, function(theAPIResponse) {
-          if (theAPIResponse != "") {
-            userPassword.setAttribute("type", "text");
-            userPassword.value = theAPIResponse;
-            document.getElementById("showPassword").style.display = "none";
-            document.getElementById("hidePassword").style.display = "inline";
-          }
-        });
+      function showDefaultPassword() {
+        userPassword.setAttribute("type", "text");
+        userPassword.value = defaultPassword;
+        document.getElementById("showPassword").style.display = "none";
+        document.getElementById("hidePassword").style.display = "inline";
       }
 
       // Generates a new password for the user. Doesn't set it straight away, the user can review the password and change it / generate a new one if they want.
@@ -200,7 +208,7 @@
             <div class="row justify-content-center">
               <div class="col-2"></div>
               <div class="col-3">
-                <button type="button" class="btn btn-success" onclick="getDefaultPassword()">Get Default Password</button>
+                <button id="showDefaultPasswordButton" type="button" class="btn btn-success" onclick="showDefaultPassword()">Show Default Password</button>
               </div>
               <div class="col-2"></div>
               <div class="col-3">
