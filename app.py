@@ -222,8 +222,8 @@ def setPassword():
     except ValueError as e:
         return "ERROR: " + str(e)
     
-    if user in defaultPasswords.keys():
-        print("To do: set password code goes here...")
+    print("To do: set password for user " + user + " to " + newPassword)
+    
     return "New password set for user: " + user
 
 if __name__ == "__main__":
