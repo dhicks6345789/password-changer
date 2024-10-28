@@ -80,6 +80,10 @@
       // Make the "changePassword" user interface block visitable, hide other blocks.
       function showChangePasswordBlock(theUserEmail) {
         showBlock("changePasswordBlock");
+        userPassword.setAttribute("type", "password");
+        userPassword.value = "";
+        document.getElementById("showPassword").style.display = "inline";
+        document.getElementById("hidePassword").style.display = "none";
         document.getElementById("newPasswordUser").innerHTML = "Enter new password for user: " + theUserEmail;
         doAPICall("getDefaultPassword", {"loginToken":loginToken, "user":theUserEmail}, function(theAPIResponse) {
           if (theAPIResponse == "") {
@@ -250,7 +254,10 @@
               </div>
             </div>
             <div class="row justify-content-center">
-              <div class="col-12">
+              <div class="col-6">
+                <button type="button" class="btn btn-danger" onclick="showSelectUserBlock()">Cancel</button>
+              </div>
+              <div class="col-6">
                 <input class="btn btn-primary float-end" type="submit" value="Set Password">
               </div>
             </div>
