@@ -125,7 +125,7 @@ def checkLoginToken(theValues):
     userData = loginTokenCache.get(loginToken)
     if not userData:
         raise ValueError("Invalid login token.")
-    return loginToken
+    return userData
 
 
 
@@ -163,7 +163,7 @@ def verifyGoogleIDToken():
 @app.route("/api/getAdditionalUsers", methods=["POST"])
 def getAdditionalUsers():
     try:
-        loginToken = checkLoginToken(flask.request.values)
+        userData = checkLoginToken(flask.request.values)
     except ValueError as e:
         return "ERROR: " + repr(e)
     
@@ -179,7 +179,7 @@ def getAdditionalUsers():
 @app.route("/api/getDefaultPassword", methods=["POST"])
 def getDefaultPassword():
     try:
-        loginToken = checkLoginToken(flask.request.values)
+        userData = checkLoginToken(flask.request.values)
         user = checkRequiredValue(flask.request.values, "user")
     except ValueError as e:
         return "ERROR: " + repr(e)
@@ -193,7 +193,7 @@ def getDefaultPassword():
 @app.route("/api/setPassword", methods=["POST"])
 def setPassword():
     try:
-        loginToken = checkLoginToken(flask.request.values)
+        userData = checkLoginToken(flask.request.values)
         user = checkRequiredValue(flask.request.values, "user")
         newPassword = checkRequiredValue(flask.request.values, "newPassword")
     except ValueError as e:
