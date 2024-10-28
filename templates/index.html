@@ -162,9 +162,13 @@
         if (configError != "") {
           showErrorMessage(configError);
         } else {
-          document.getElementById("setPasswordForm").addEventListener('submit', function(event) { 
-            event.preventDefault(); 
-            console.log("Submit password...");
+          document.getElementById("setPasswordForm").addEventListener('submit', function(event) {
+            event.preventDefault();
+            doAPICall("setPassword", {"loginToken":loginToken, "user":userEmail}, function(theAPIResponse) {
+              showBlock("passwordSetBlock");
+              document.getElementById("passwordSetHeading").innerHTML = "Password set for user: " + userEmail;
+              document.getElementById("passwordSetMessage").innerHTML = theAPIResponse;
+            });
           }); 
         }
         mainContainerBlocks = document.getElementById("mainContainer").children
@@ -244,6 +248,10 @@
             </div>
           </div>
         </form>
+      </div>
+      <div id="passwordSetBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
+        <h1 id="passwordSetHeading">Password set for user:</h1>
+        <h2 id="passwordSetMessage"></h2>
       </div>
     </main>
   </body>
