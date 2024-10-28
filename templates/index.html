@@ -84,7 +84,7 @@
         userPassword.value = "";
         document.getElementById("showPassword").style.display = "inline";
         document.getElementById("hidePassword").style.display = "none";
-        document.getElementById("newPasswordUser").innerHTML = "Enter new password for user: " + theUserEmail;
+        document.getElementById("newPasswordUser").innerHTML = theUserEmail;
         doAPICall("getDefaultPassword", {"loginToken":loginToken, "user":theUserEmail}, function(theAPIResponse) {
           if (theAPIResponse == "") {
             document.getElementById("showDefaultPasswordButton").disabled = true;
@@ -182,7 +182,7 @@
         } else {
           document.getElementById("setPasswordForm").addEventListener('submit', function(event) {
             event.preventDefault();
-            doAPICall("setPassword", {"loginToken":loginToken, "user":userEmail, "newPassword":document.getElementById("userPassword").value}, function(theAPIResponse) {
+            doAPICall("setPassword", {"loginToken":loginToken, "user":document.getElementById("newPasswordUser").innerHTML, "newPassword":document.getElementById("userPassword").value}, function(theAPIResponse) {
               showBlock("passwordSetBlock");
               document.getElementById("passwordSetMessage").innerHTML = theAPIResponse;
             });
@@ -223,7 +223,7 @@
           <div class="container">
             <div class="row justify-content-center">
               <div class="col-12">
-                <h1 id="newPasswordUser">Enter new password for user:</h1>
+                <h1>Enter new password for user: <span id="newPasswordUser"></span></h1>
               </div>
             </div>
             <div class="row justify-content-center">
