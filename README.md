@@ -29,3 +29,10 @@ Clone / download the repository from Github. Change to the folder where the repo
 ### On Windows
 
 Run install.bat. This should create a folder "C:\Program Files\PasswordChanger", copy the appropriate files over and set up the Waitress WSGI server as a system service that starts on boot and that can be started and stopped via the command line or Windows Task Manager.
+
+If you want to run the Flask application in test / debug mode, you can go to a local command line and do:
+
+```
+cd "C:\Program Files\Password Changer"
+cls & net stop PasswordChanger & venv\Scripts\python.exe app.py
+```
