@@ -37,20 +37,24 @@ cd "C:\Program Files\Password Changer"
 cls & net stop PasswordChanger & venv\Scripts\python.exe app.py
 ```
 
-### Additional Files / Applications
+## Additional Files / Applications
 
-You will need to set up a project (or use an existing one) in the Google [Cloud Console](https://console.developers.google.com/apis). You will need to set up an OAuth 2.0 Client ID - see [Google's Documentation](https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid) for a step-by-step guide.
+### Google Project / OAuth 2 Credentials
 
-Password Changer will need to be provided with a `client_secret.json` (place it in the application folder where you have Password Changer installed - `C:\Program Files\PasswordChanger` on Windows) containing a value for `{"web":{"client_id":"YOUR_ID_HERE.apps.googleusercontent.com"}}`. If you set up OAuth 2.0 credentials as above, the client_secret file you can download from the Google console contains the relevant value.
+You will need to set up a project (or use an existing one) in the Google [Cloud Console](https://console.developers.google.com/apis). You will need to set up an OAuth 2 Client ID - see [Google's Documentation](https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid) for a step-by-step guide.
 
-If you want some users of Password Changer to be able to change passwords for other users, you will need a permissions.txt file (again, just placed in the application install folder) in the following simple format:
+Password Changer will need to be provided with a `client_secret.json` (place it in the application folder where you have Password Changer installed - `C:\Program Files\PasswordChanger` on Windows) containing a value for `{"web":{"client_id":"YOUR_ID_HERE.apps.googleusercontent.com"}}`. If you set up OAuth 2 credentials as above, the client_secret file you can download from the Google console contains the relevant value.
+
+### Permissions / Groups
+
+If you want some users of Password Changer to be able to change passwords for other users, you will need a `permissions.txt` file (again, just placed in the application install folder) in the following simple format:
 
 ```
 u.one@example.com,u.two@example.com:groupOne,groupTwo
 u.three@example.com:groupTwo
 ```
 
-You will then also need a sub-folder called "groups" with files that match the names of the groups. Goup files are simple lists of users, one per line. If wanted, default passwords can be included, separated from the username by a comma:
+You will then also need a sub-folder called "groups" with files that match the names of the groups. Group files are simple lists of users, one per line. If wanted, default passwords can be included, separated from the username by a comma:
 
 `groups/groupOne.txt`:
 ```
@@ -58,3 +62,9 @@ f.bloggs@example,com,HappyFish23
 j.smith@example.com,FatChipmunk56
 ...
 ```
+
+Hopefully, the above format is simple enough to either manually edit or automatically generate from whatever system you use for holding usernames. Any changes to permissions / groups should be picked up after 5 minutes - a nightly export job of users from your user database would probably be a good idea.
+
+### Reverse Proxy / Ingress Service
+
+Installing Password Changer will give you a Python / Flask project served by Waitress on your installation machine on port 8070 via HTTP (not HTTPS). You will need to find some way of making the application available to the wider network / Internet - importantly, that service will need to handle HTTPS. The default configuration should let only local HTTP connections through, so a reverse proxy / ingress service running on the same machine is going to be needed.
