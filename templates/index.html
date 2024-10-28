@@ -20,12 +20,16 @@
     <script>
       // The login token returned after a succesful login-with-Google.
       var loginToken = "";
+      
       // The user email address, also returned after a succesful login-with-Google.
       var userEmail = "";
+      
       // The list of users for the current user to select from.
       var userList = [];
+      
       // A list of user interface "blocks".
       var blocks = [];
+      
       // The default password for the user who's password is to be changed.
       var defaultPassword = ""
       
@@ -87,6 +91,21 @@
         });
       }
 
+      // If this user can change password for some other users, show the "selectUser" block, otherwise just show the "changePassword" block.
+      function showSelectUserBlock() {
+        doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
+          userList = JSON.parse(theAPIResponse);
+          if (userList == []) {
+            // User can't change passwords for other users, go straight to the change-my-own-password dialog.
+            showChangePasswordBlock(userEmail);
+          } else {
+            // User can change passwords for some other users, populate and display that list of users to select from.
+            showBlock("selectUserBlock");
+            populateUserList();
+          }
+        });
+      }
+
       // A function to populate the list-of-users.
       function populateUserList() {
         userListDiv = document.getElementById("userList");
@@ -142,17 +161,7 @@
           theAPIResponseSplit = theAPIResponse.split(",");
           loginToken = theAPIResponseSplit[0];
           userEmail = theAPIResponseSplit[1];
-          doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
-            userList = JSON.parse(theAPIResponse);
-            if (userList == []) {
-              // User can't change passwords for other users, go straight to the change-my-own-password dialog.
-              showChangePasswordBlock(userEmail);
-            } else {
-              // User can change passwords for some other users, populate and display that list of users to select from.
-              showBlock("selectUserBlock");
-              populateUserList();
-            }
-          });
+          showSelectUserBlock();
         });
       }
       
@@ -252,6 +261,7 @@
       <div id="passwordSetBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
         <h1 id="passwordSetHeading">Password set for user:</h1>
         <h2 id="passwordSetMessage"></h2>
+        <button type="button" class="btn btn-success" onclick="showSelectUserBlock()">Change Another</button>
       </div>
     </main>
   </body>
