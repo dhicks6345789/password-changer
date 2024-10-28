@@ -130,9 +130,12 @@ def checkLoginToken(theValues):
 # Helper function to check the given current user has permissions to view / change the password for another given user.
 def checkPermissions(theCurrentUser, theOtherUser):
     userFound = False
+    print(theCurrentUser)
+    print(permissions.keys())
     if theCurrentUser in permissions.keys():
+        print(permissions[theCurrentUser].split(","))
         for group in permissions[theCurrentUser].split(","):
-            if theOtherUser in group.strip():
+            if theOtherUser.strip() in groups[group.strip()]:
                 userFound = True
     if not userFound:
         raise ValueError("User " + theCurrentUser + " does not have permissions for " + theOtherUser)
