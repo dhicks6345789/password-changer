@@ -47,7 +47,3 @@ net stop PasswordChanger > nul 2>&1
 "%srcPath%\nssm\2.24\win64\nssm.exe" set PasswordChanger AppNoConsole 1 > nul 2>&1
 "%srcPath%\nssm\2.24\win64\nssm.exe" set PasswordChanger Start SERVICE_AUTO_START > nul 2>&1
 net start PasswordChanger
-
-rem Note: to test locally, go to a command line and do:
-rem cd "C:\Program Files\Password Changer"
-rem cls & net stop PasswordChanger & venv\Scripts\python.exe app.py
