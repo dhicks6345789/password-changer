@@ -86,13 +86,19 @@
         }
       }
 
-      // Goes to the server to get the user's default password.
+      // Goes to the server to get the user's default password, sets that as the current password value in the input box and makes sure it is visible to the user. Doesn't set it straight away, the user can review the password and change it / generate a new one if they want.
       function getDefaultPassword() {
-        userPassword = document.getElementById("userPassword");
-        userPassword.setAttribute("type", "text");
-        userPassword.value = "DefaultPassword!";
-        document.getElementById("showPassword").style.display = "none";
-        document.getElementById("hidePassword").style.display = "inline";
+        doAPICall("getDefaultPassword", {"loginToken":loginToken, "user":"bananas"}, function(theAPIResponse) {
+          if (theAPIResponse.startsWith("ERROR:")) {
+            showErrorMessage(theAPIResponse.slice(7));
+          } else {
+            if (theAPIResponse != "") {
+              userPassword.setAttribute("type", "text");
+              userPassword.value = theAPIResponse;
+              document.getElementById("showPassword").style.display = "none";
+              document.getElementById("hidePassword").style.display = "inline";
+            }
+          }
       }
 
       // Generates a new password for the user. Doesn't set it straight away, the user can review the password and change it / generate a new one if they want.
