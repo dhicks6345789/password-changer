@@ -18,9 +18,13 @@
     <script src="https://accounts.google.com/gsi/client" async></script>
 
     <script>
+      // The login token returned after a succesful login-with-Google.
       var loginToken = "";
+      // The user email address, also returned after a succesful login-with-Google.
       var userEmail = "";
       var userList = [];
+      // A list of user interface "blocks".
+      var blocks = [];
       
       // A function to do an api call to the server.
       function doAPICall(theMethod, theParams, theSuccessFunction, callMethod="POST") {
@@ -49,17 +53,25 @@
         }
       }
 
+      function showBlock(theBlock) {
+        for (blockNum = 0; blockNum < blocks.length; blockNum = blockNum + 1) {
+          if (blocks[blockNum] == theBlock) {
+            document.getElementById(blocks[blockNum]).style.display = "flex";
+          } else {
+            document.getElementById(blocks[blockNum]).style.display = "none";
+          }
+        }
+      }
+      
       // A function to display an error message for the end user.
       function showErrorMessage(theErrorMessage) {
-        document.getElementById("googleLoginBlock").style.display = "none";
-        document.getElementById("errorMessageBlock").style.display = "flex";
+        showBlock("errorMessageBlock");
         document.getElementById("errorMessageText").innerHTML = theErrorMessage;
       }
 
       // Make the "changePassword" user interface block visitable, hide other blocks.
       function showChangePasswordBlock(theUserEmail) {
-        document.getElementById("selectUserBlock").style.display = "none";
-        document.getElementById("changePasswordBlock").style.display = "flex";
+        showBlock("changePasswordBlock");
         document.getElementById("newPasswordUser").innerHTML = "Enter new password for user: " + theUserEmail;
       }
 
@@ -119,7 +131,6 @@
       // to our server via an API call to validate. If valid, we'll receive a login token, otherwise we'll receive an error message.
       function handleGoogleCredentialResponse(theGoogleResponse) {
         doAPICall("verifyGoogleIDToken", {"googleIDToken":theGoogleResponse.credential}, function(theAPIResponse) {
-          document.getElementById("googleLoginBlock").style.display = "none";
           theAPIResponseSplit = theAPIResponse.split(",");
           loginToken = theAPIResponseSplit[0];
           userEmail = theAPIResponseSplit[1];
@@ -130,7 +141,7 @@
               showChangePasswordBlock(userEmail);
             } else {
               // User can change passwords for some other users, populate and display that list of users to select from.
-              document.getElementById("selectUserBlock").style.display = "flex";
+              showBlock("selectUserBlock");
               populateUserList();
             }
           });
@@ -150,7 +161,9 @@
         }
         mainContainerBlocks = document.getElementById("mainContainer").children
         for (pl = 0; pl < mainContainerBlocks.length; pl = pl + 1) {
-          console.log(mainContainerBlocks[pl].id);
+          if (mainContainerBlocks[pl].id.endsWith("Block") {
+            blocks.push(mainContainerBlocks[pl].id);
+          }
         }
       }
     </script>
