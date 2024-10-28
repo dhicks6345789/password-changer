@@ -129,6 +129,8 @@ def checkLoginToken(theValues):
 
 # Helper function to check the given current user has permissions to view / change the password for another given user.
 def checkPermissions(theCurrentUser, theOtherUser):
+    if theCurrentUser == theOtherUser:
+        return
     userFound = False
     if theCurrentUser in permissions.keys():
         for group in permissions[theCurrentUser].split(","):
