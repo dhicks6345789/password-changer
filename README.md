@@ -45,7 +45,7 @@ Run install.bat. This should create a folder `C:\Program Files\PasswordChanger`,
 If you want to run the Flask application in test / debug mode, you can go to a local command line and do:
 
 ```
-cd "C:\Program Files\Password Changer"
+cd "C:\Program Files\PasswordChanger"
 cls & net stop PasswordChanger & venv\Scripts\python.exe app.py
 ```
 
