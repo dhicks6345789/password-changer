@@ -34,7 +34,7 @@ Password Changer is intended to be run on some kind of server, although there is
 
 You will need a working [Python](https://www.python.org/) environment on your machine. Python is included in most Linux distributions these days, and is simple enough to [install on Windows](https://www.python.org/downloads/windows/).
 
-Note that the installation script for Password Changer sets up and runs with a Python Virtual Environment ([venv](https://docs.python.org/3/library/venv.html), so any Python packages installed will be in their own self-contained setup and shouldn't affect (or even be seen by) the rest of your system.
+Note that the installation script for Password Changer sets up and runs with a Python Virtual Environment ([venv](https://docs.python.org/3/library/venv.html)), so any Python packages installed will be in their own self-contained setup and shouldn't affect (or even be seen by) the rest of your system.
 
 Clone / download the repository from Github. Change to the folder where the repository is stored.
 
