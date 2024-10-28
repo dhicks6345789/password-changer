@@ -166,7 +166,6 @@ def keepAlive():
         userData = checkLoginToken(flask.request.values)
     except ValueError as e:
         return "ERROR: " + repr(e)
-    print("Keep alive!")
     return "OK"
 
 # Return a list of additional users, if any, the current user can set the passwords of.
