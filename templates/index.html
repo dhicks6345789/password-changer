@@ -145,6 +145,7 @@
         userPassword.value = defaultPassword;
         document.getElementById("showPassword").style.display = "none";
         document.getElementById("hidePassword").style.display = "inline";
+        validatePassword();
       }
 
       // Generates a new password for the user. Doesn't set it straight away, the user can review the password and change it / generate a new one if they want.
