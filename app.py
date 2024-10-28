@@ -127,8 +127,16 @@ def checkLoginToken(theValues):
         raise ValueError("Invalid login token.")
     return userData
 
-
-
+# Helper function to check the given current user has permissions to view / change the password for another given user.
+def checkPermissions(theCurrentUser, theOtherUser):
+    userFound = False
+    if theCurrentUser in permissions.keys():
+        for group in permissions[theCurrentUser].split(","):
+            if theOtherUser in group.strip():
+                userFound = True
+    if not userFound:
+        raise ValueError("ERROR: User " + userData["emailAddress"] + " does not have permissions for " + user)
+        
 # API functions - these are the functions that can be called by the front-end.
 
 # This is a single-page app, any user interface changes are made via calls to the API.
@@ -190,12 +198,13 @@ def getDefaultPassword():
     try:
         userData = checkLoginToken(flask.request.values)
         user = checkRequiredValue(flask.request.values, "user")
+        checkPermissions(userData["emailAddress"], user)
     except ValueError as e:
         return "ERROR: " + repr(e)
     
     if user in defaultPasswords.keys():
-        #if userData["emailAddress"] in permissions.keys():
         return defaultPasswords[user]
+    
     return ""
 
 # Set the given user's password. Make sure the current user (which might be different) has permissions to set that password first.
@@ -204,14 +213,13 @@ def setPassword():
     try:
         userData = checkLoginToken(flask.request.values)
         user = checkRequiredValue(flask.request.values, "user")
+        checkPermissions(userData["emailAddress"], user)
         newPassword = checkRequiredValue(flask.request.values, "newPassword")
     except ValueError as e:
         return "ERROR: " + repr(e)
     
     if user in defaultPasswords.keys():
-        print("Setting password...")
-        # To do: set password here.
-        #if userData["emailAddress"] in permissions.keys():
+        print("To do: set password code goes here...")
     return "New password set for user: " + user
 
 if __name__ == "__main__":
