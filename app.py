@@ -104,7 +104,7 @@ appData["configError"] = configError
 
 
 
-# --- Local-only helper functions. ---
+# --- Helper functions. ---
 
 # Helper function to generate and cache a login token for a validated user.
 def generateLoginToken(userData):
@@ -130,17 +130,16 @@ def checkLoginToken(theValues):
 # Helper function to check the given current user has permissions to view / change the password for another given user.
 def checkPermissions(theCurrentUser, theOtherUser):
     userFound = False
-    print(theCurrentUser)
-    print(permissions.keys())
     if theCurrentUser in permissions.keys():
-        print(permissions[theCurrentUser].split(","))
         for group in permissions[theCurrentUser].split(","):
             if theOtherUser.strip() in groups[group.strip()]:
                 userFound = True
     if not userFound:
         raise ValueError("User " + theCurrentUser + " does not have permissions for " + theOtherUser)
-        
-# API functions - these are the functions that can be called by the front-end.
+
+
+
+# --- API functions - these are the functions that can be called by the front-end. ---
 
 # This is a single-page app, any user interface changes are made via calls to the API.
 @app.route("/")
