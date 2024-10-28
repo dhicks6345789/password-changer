@@ -171,13 +171,14 @@ def verifyGoogleIDToken():
     loginToken = generateLoginToken({"emailAddress":IDInfo["email"], "loginType":"google"})
     return loginToken + "," + IDInfo["email"]
 
-# Just checks the given loginToken, which refreshes the time-to-live value for that token.
+# Just checks the given loginToken, then refreshes the time-to-live value for that token.
 @app.route("/api/keepAlive", methods=["POST"])
 def keepAlive():
     try:
         userData = checkLoginToken(flask.request.values)
     except ValueError as e:
         return "ERROR: " + str(e)
+    loginTokenCache.set(flask.request.values.get("loginToken"), userData)
     return "OK"
 
 # Return a list of additional users, if any, the current user can set the passwords of.
