@@ -36,3 +36,9 @@ If you want to run the Flask application in test / debug mode, you can go to a l
 cd "C:\Program Files\Password Changer"
 cls & net stop PasswordChanger & venv\Scripts\python.exe app.py
 ```
+
+### Additional Files / Applications
+
+You will need to set up a project (or use an existing one) in the Google [Cloud Console](https://console.developers.google.com/apis). You will need to set up an OAuth 2.0 Client ID - see [Google's Documentation](https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid) for a step-by-step guide.
+
+Password Changer will need to be provided with a client_secret.json (place it in the application folder where you have Password Changer installed - C:\Program Files\PasswordChanger on Windows) containing a value for {"web":{"client_id":"YOUR_ID_HERE.apps.googleusercontent.com"}}. If you set up OAuth 2.0 credentials as above, the client_secret file you can download from the Google console contains the relevant value.
