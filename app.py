@@ -17,15 +17,19 @@ import google.auth.transport.requests
 # Instantiate the Flask app, set configuration values.
 app = flask.Flask(__name__)
 app.config.from_mapping({
-    # Set values for the Flask-Caching module. Value timeout (i.e. timeout for user sessions with no activity) is 10 minutes.
+    # Set values for the Flask-Caching module. I'd use memcached as a caching backend, but that's not available on Windows.
     "CACHE_TYPE": "FileSystemCache",
-    "CACHE_DEFAULT_TIMEOUT": 600,
     "CACHE_DIR": "cache",
+    # Value timeout (i.e. timeout for user sessions with no activity) is 10 minutes (600 seconds).
+    "CACHE_DEFAULT_TIMEOUT": 600,
+    # We don't want to present a user interface, we just want to run an internal periodic function.
     "SCHEDULER_API_ENABLED": False
 })
 
 # Instantiate the cache object.
 loginTokenCache = flask_caching.Cache(app)
+
+configError = ""
 
 # Open and read client_secret.json containing the Google authentication client secrets.
 clientSecretData = {"web":{"client_id":""}}
@@ -58,14 +62,13 @@ scheduler.start()
 # We run the "refreshData" function periodically to check and see if any permissions / group lists have been updated.
 groups = {}
 permissions = {}
-configError = ""
 defaultPasswords = {}
 @scheduler.task("interval", id="refreshData", seconds=300, misfire_grace_time=900)
 def refreshData():
     global groups
     global permissions
-    global configError
     global defaultPasswords
+    global configError
     
     groups = {}
     defaultPasswords = {}
@@ -127,7 +130,8 @@ def checkLoginToken(theValues):
         raise ValueError("Invalid login token.")
     return userData
 
-# Helper function to check the given current user has permissions to view / change the password for another given user.
+# Helper function to check the given current user has permissions to view / change the password for another given user. Throws a ValueError
+# if the current user does not have permissions for the other given user, otherwise just returns nothing if all is okay.
 def checkPermissions(theCurrentUser, theOtherUser):
     if theCurrentUser == theOtherUser:
         return
@@ -143,7 +147,7 @@ def checkPermissions(theCurrentUser, theOtherUser):
 
 # --- API functions - these are the functions that can be called by the front-end. ---
 
-# This is a single-page app, any user interface changes are made via calls to the API.
+# This is a single-page app, there's just the one HTML page to serve - any user interface changes are made via calls to the API.
 @app.route("/")
 def index():
     return flask.render_template("index.html", appData=appData)
