@@ -122,8 +122,10 @@ def checkRequiredValue(theValues, theValueName):
         raise ValueError("Missing value - " + theValueName + ".")
     return result
 
-def checkIPAddress(theRequest):
-    print(theRequest.remote_addr)
+def checkIPAddress():
+    print(flask.request.remote_addr)
+    if flask.request.remote_addr == "127.0.0.1":
+        print(flask.request.environ["HTTP_CF_CONNECTING_IP"])
 
 # Helper function to check the "loginToken" value both exists and points at a valid login session. Throws a ValueError if there's a problem.
 def checkLoginToken(theValues):
@@ -153,7 +155,7 @@ def checkPermissions(theCurrentUser, theOtherUser):
 # This is a single-page app, there's just the one HTML page to serve - any user interface changes are made via calls to the API.
 @app.route("/")
 def index():
-    checkIPAddress(flask.request)
+    checkIPAddress()
     return flask.render_template("index.html", appData=appData)
 
 # When the user completes the "Sign In With Google" workflow on the client side, this function gets called to confirm they have a valid login.
