@@ -190,7 +190,18 @@
       
       // The function called when the page is fully loaded and ready to display.
       function doPageLoad() {
+        // Populate the array used to show / hide user interface elements.
+        mainContainerBlocks = document.getElementById("mainContainer").children
+        for (pl = 0; pl < mainContainerBlocks.length; pl = pl + 1) {
+          if (mainContainerBlocks[pl].id.endsWith("Block")) {
+            blocks.push(mainContainerBlocks[pl].id);
+          }
+        }
+
+        // Set the configError - this value can be set server-side if there's a config error.
         configError = "{{ appData['configError'] }}";
+
+        // Check the config error - if the above value is set (rendered server-side, which is a little confusing if you're viewing this client-side only) then display the error to the user.
         if (configError != "") {
           showErrorMessage(configError);
         } else {
@@ -201,12 +212,6 @@
               document.getElementById("passwordSetMessage").innerHTML = theAPIResponse;
             });
           }); 
-        }
-        mainContainerBlocks = document.getElementById("mainContainer").children
-        for (pl = 0; pl < mainContainerBlocks.length; pl = pl + 1) {
-          if (mainContainerBlocks[pl].id.endsWith("Block")) {
-            blocks.push(mainContainerBlocks[pl].id);
-          }
         }
       }
     </script>
