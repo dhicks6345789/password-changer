@@ -123,7 +123,17 @@
         }
         userListDiv.innerHTML = userListHTML;
       }
-
+      
+      // Checks the password to be set is valid, disables the "Set Password" button if not.
+      function validatePassword() {
+        userPasswordValue = document.getElementById("userPassword").value;
+        if (userPasswordValue.length > 3) {
+          document.getElementById("setPassword").disabled = false;
+        } else {
+          document.getElementById("setPassword").disabled = true;
+        }
+      }
+      
       // Toggles the visibility of the "userPassword" password input.
       function togglePassword() {
         userPassword = document.getElementById("userPassword");
@@ -137,7 +147,7 @@
           document.getElementById("hidePassword").style.display = "none";
         }
       }
-
+      
       // Goes to the server to get the user's default password, sets that as the current password value in the input box and makes sure it is visible to the user. Doesn't set it straight away, the user can review the password and change it / generate a new one if they want.
       function showDefaultPassword() {
         userPassword = document.getElementById("userPassword");
@@ -159,16 +169,7 @@
         userPassword.value = adjectives[Math.floor(Math.random() * adjectives.length)] + nouns[Math.floor(Math.random() * nouns.length)] + (Math.floor(Math.random() * 90) + 10);
         document.getElementById("showPassword").style.display = "none";
         document.getElementById("hidePassword").style.display = "inline";
-      }
-
-      // Checks the password to be set is valid, disables the "Set Password" button if not.
-      function validatePassword() {
-        userPasswordValue = document.getElementById("userPassword").value;
-        if (userPasswordValue.length > 3) {
-          document.getElementById("setPassword").disabled = false;
-        } else {
-          document.getElementById("setPassword").disabled = true;
-        }
+        validatePassword();
       }
       
       // A function called when the user completes the "Login With Google" workflow. That gives us a credntial token which we then need to send back
