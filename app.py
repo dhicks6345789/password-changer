@@ -41,6 +41,18 @@ else:
     clientSecretData = json.load(clientSecretFile)
     clientSecretFile.close()
 
+# Open and read validIPAddresses.txt containing a list of any valid IP addresses, if we want to limit access to just known IP addresses.
+validIPAddresses = []
+if os.path.isfile("permissions.txt"):
+    try:
+        validIPAddressesFile = open("validIPAddresses.txt")
+    except OSError:
+        configError = "Configuration error - Couldn't load file validIPAddresses.txt."
+    else:
+        for IPAddress in validIPAddressesFile.readlines():
+            validIPAddresses.append(IPAddress.strip())
+        validIPAddressesFile.close()
+
 # Application details, used to render the HTML page.
 appData = {
     "name":"Password Changer",
@@ -116,20 +128,25 @@ def generateLoginToken(userData):
     return(loginToken)
 
 # Helper function to check a value exists in a given set of Flask values. Throws a ValueError if not.
-def checkRequiredValue(theValues, theValueName):
-    result = theValues.get(theValueName, None)
+def checkRequiredValue(theValueName):
+    result = flask.request.values.get(theValueName, None)
     if result == None:
         raise ValueError("Missing value - " + theValueName + ".")
     return result
 
+# Helper function to check the IP address of the request is in the whitelist, if the whitelist is defined. Throws a ValueError if not.
 def checkIPAddress():
-    print(flask.request.remote_addr)
-    if flask.request.remote_addr == "127.0.0.1":
-        print(flask.request.environ["HTTP_CF_CONNECTING_IP"])
+    ipAddress = flask.request.remote_addr
+    if ipAddress == "127.0.0.1":
+        ipAddress = flask.request.environ["HTTP_CF_CONNECTING_IP"]
+    if not validIPAddresses == []:
+        if not ipAddress in validIPAddresses:
+            raise ValueError("Configuration error - Your IP address (" + ipAddress + ") does not have permission to access this application.")
 
 # Helper function to check the "loginToken" value both exists and points at a valid login session. Throws a ValueError if there's a problem.
-def checkLoginToken(theValues):
-    loginToken = checkRequiredValue(theValues, "loginToken")
+def checkLoginToken():
+    checkIPAddress()
+    loginToken = checkRequiredValue("loginToken")
     userData = loginTokenCache.get(loginToken)
     if not userData:
         raise ValueError("Invalid login token.")
@@ -155,7 +172,11 @@ def checkPermissions(theCurrentUser, theOtherUser):
 # This is a single-page app, there's just the one HTML page to serve - any user interface changes are made via calls to the API.
 @app.route("/")
 def index():
-    checkIPAddress()
+    try:
+        checkIPAddress()
+    except ValueError as e:
+        # Invalid request IP address.
+        appData["configError"] = str(e)
     return flask.render_template("index.html", appData=appData)
 
 # When the user completes the "Sign In With Google" workflow on the client side, this function gets called to confirm they have a valid login.
@@ -185,7 +206,7 @@ def verifyGoogleIDToken():
 @app.route("/api/keepAlive", methods=["POST"])
 def keepAlive():
     try:
-        userData = checkLoginToken(flask.request.values)
+        userData = checkLoginToken()
     except ValueError as e:
         return "ERROR: " + str(e)
     loginTokenCache.set(flask.request.values.get("loginToken"), userData)
@@ -195,7 +216,7 @@ def keepAlive():
 @app.route("/api/getAdditionalUsers", methods=["POST"])
 def getAdditionalUsers():
     try:
-        userData = checkLoginToken(flask.request.values)
+        userData = checkLoginToken()
     except ValueError as e:
         return "ERROR: " + str(e)
     
@@ -211,8 +232,8 @@ def getAdditionalUsers():
 @app.route("/api/getDefaultPassword", methods=["POST"])
 def getDefaultPassword():
     try:
-        userData = checkLoginToken(flask.request.values)
-        user = checkRequiredValue(flask.request.values, "user")
+        userData = checkLoginToken()
+        user = checkRequiredValue("user")
         checkPermissions(userData["emailAddress"], user)
     except ValueError as e:
         return "ERROR: " + str(e)
@@ -226,10 +247,10 @@ def getDefaultPassword():
 @app.route("/api/setPassword", methods=["POST"])
 def setPassword():
     try:
-        userData = checkLoginToken(flask.request.values)
-        user = checkRequiredValue(flask.request.values, "user")
+        userData = checkLoginToken()
+        user = checkRequiredValue("user")
         checkPermissions(userData["emailAddress"], user)
-        newPassword = checkRequiredValue(flask.request.values, "newPassword")
+        newPassword = checkRequiredValue("newPassword")
     except ValueError as e:
         return "ERROR: " + str(e)
     
