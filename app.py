@@ -140,8 +140,8 @@ def checkIPAddress():
     #print(ipAddress)
     if ipAddress == "127.0.0.1":
         #print(flask.request.environ)
-        #ipAddress = flask.request.environ["HTTP_CF_CONNECTING_IP"]
-        ipAddress = flask.request.environ["HTTP_X_FORWARDED_FOR"]
+        ipAddress = flask.request.environ["HTTP_CF_CONNECTING_IP"]
+        #ipAddress = flask.request.environ["HTTP_X_FORWARDED_FOR"]
     if not validIPAddresses == []:
         if not ipAddress in validIPAddresses:
             raise ValueError("Configuration error - Your IP address (" + ipAddress + ") does not have permission to access this application.")
