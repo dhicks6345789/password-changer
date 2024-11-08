@@ -138,6 +138,7 @@ def checkRequiredValue(theValueName):
 def checkIPAddress():
     ipAddress = flask.request.remote_addr
     if ipAddress == "127.0.0.1":
+        print(ipAddress = flask.request.environ)
         ipAddress = flask.request.environ["HTTP_CF_CONNECTING_IP"]
     if not validIPAddresses == []:
         if not ipAddress in validIPAddresses:
