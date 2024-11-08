@@ -137,8 +137,9 @@ def checkRequiredValue(theValueName):
 # Helper function to check the IP address of the request is in the whitelist, if the whitelist is defined. Throws a ValueError if not.
 def checkIPAddress():
     ipAddress = flask.request.remote_addr
+    print(ipAddress)
     if ipAddress == "127.0.0.1":
-        print(ipAddress = flask.request.environ)
+        print(flask.request.environ)
         ipAddress = flask.request.environ["HTTP_CF_CONNECTING_IP"]
     if not validIPAddresses == []:
         if not ipAddress in validIPAddresses:
