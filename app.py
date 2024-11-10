@@ -49,8 +49,10 @@ if os.path.isfile("permissions.txt"):
     except OSError:
         configError = "Configuration error - Couldn't load file validIPAddresses.txt."
     else:
-        for IPAddress in validIPAddressesFile.readlines():
-            validIPAddresses.append(IPAddress.strip())
+        for IPAddressLine in validIPAddressesFile.readlines():
+            IPAddress = IPAddressLine.split(" ")[0].split("#")[0].strip()
+            if not IPAddress == "":
+                validIPAddresses.append(IPAddress)
         validIPAddressesFile.close()
 
 # Application details, used to render the HTML page.
