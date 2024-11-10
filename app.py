@@ -54,6 +54,7 @@ if os.path.isfile("permissions.txt"):
             if not IPAddress == "":
                 validIPAddresses.append(IPAddress)
         validIPAddressesFile.close()
+print(validIPAddresses)
 
 # Application details, used to render the HTML page.
 appData = {
