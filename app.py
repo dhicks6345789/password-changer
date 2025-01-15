@@ -264,13 +264,11 @@ def setPassword():
         return "ERROR: No change-password-enabled folder found."
     
     for item in os.listdir("change-password-enabled"):
-        result = subprocess.run(["change-password-enabled" + os.sep + item, user, newPassword], stdout=subprocess.PIPE)
+        result = subprocess.run(["change-password-enabled" + os.sep + item, user, newPassword], stdout=subprocess.PIPE, stderr=subprocess.stdout)
         if not result.returncode == 0:
-            # To do: add more error reporting here.
-            # result.stdout
-            return "ERROR: Unable to set password for user " + user
+            return "ERROR: Unable to set password for user " + user + ". Message returned: " + result.stdout
         
-    return "New password set for user: " + user
+    return "New password set for user: " + user + "."
 
 if __name__ == "__main__":
     app.run(debug=True, port=8070, use_reloader=False)
