@@ -1,3 +1,3 @@
 @echo off
-echo %1 %2
+echo gam update user %1 password %2
 exit 1
