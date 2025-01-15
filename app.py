@@ -2,6 +2,7 @@
 import os
 import json
 import uuid
+import subprocess
 
 # The Flask web application framework...
 import flask
@@ -258,9 +259,17 @@ def setPassword():
         newPassword = checkRequiredValue("newPassword")
     except ValueError as e:
         return "ERROR: " + str(e)
+
+    if not os.path.exists("change-password-enabled"):
+        return "ERROR: No change-password-enabled folder found."
     
-    print("To do: set password for user " + user + " to " + newPassword)
-    
+    for item in os.listdir("change-password-enabled"):
+        result = subprocess.run([item, user, newPassword], stdout=subprocess.PIPE)
+        if not result.returncode == 0:
+            # To do: add more error reporting here.
+            # result.stdout
+            return "ERROR: Unable to set password for user " + user
+        
     return "New password set for user: " + user
 
 if __name__ == "__main__":
