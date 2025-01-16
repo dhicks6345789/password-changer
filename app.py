@@ -272,7 +272,7 @@ def setPassword():
     
     for item in os.listdir("change-password-enabled"):
         if item.endswith(".ps1"):
-            result = subprocess.run(["powershell", "-file", "change-password-enabled" + os.sep + item, user, newPassword], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            result = subprocess.run(["powershell", "-file", "change-password-enabled" + os.sep + item, "-UserID", user, "-Password", newPassword], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         else:
             result = subprocess.run(["change-password-enabled" + os.sep + item, user, newPassword], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if not result.returncode == 0:
