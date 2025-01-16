@@ -1,2 +1,5 @@
 param ([string]$UserID, [string]$Password)
-Set-EntraUserPassword -UserId $UserID -Password $Password
+echo "$UserID"
+echo "$Password"
+
+#Set-EntraUserPassword -UserId $UserID -Password $Password
