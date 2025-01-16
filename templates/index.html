@@ -40,6 +40,8 @@
           if (apiCall.readyState == 4 && apiCall.status == 200) {
             if (apiCall.responseText.startsWith("ERROR:")) {
               showErrorMessage(apiCall.responseText.slice(7));
+            } else if (apiCall.responseText.startsWith("<div>ERROR:")) {
+              showErrorMessage(apiCall.responseText.slice(12));
             } else {
               theSuccessFunction(apiCall.responseText);
             }
