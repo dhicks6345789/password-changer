@@ -89,7 +89,7 @@ Installing Password Changer will give you a Python / Flask project served by Wai
 
 Password Changer was developed using Cloudflare Tunnel for handling HTTPS. Simply install the Cloudflare Tunnel client on your machine (the same one as Password Changer is on) and point it at `http://localhost:8070`.
 
-## The Password Reset Machansim
+## The Password Reset Mechanism
 
 When a user starts a valid password reset operation, the server-side application takes the user ID and new password given and passes them to a separate script for each place where you want to set the password. Therefore, this utility can set the same password for the same user in multiple places at the same time - say if you have both a Google Workspace domain and a Microsoft O365 domain, this utility should be able to keep both passwords in sync.
 
