@@ -1,2 +1,3 @@
 param ([string]$UserID, [string]$Password)
-Set-EntraUserPassword -UserId $UserID -Password $Password
+$securePassword = ConvertTo-SecureString $Password -AsPlainText -Force
+Set-EntraUserPassword -UserId $UserID -Password $securePassword
