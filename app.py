@@ -266,7 +266,7 @@ def setPassword():
     for item in os.listdir("change-password-enabled"):
         result = subprocess.run(["change-password-enabled" + os.sep + item, user, newPassword], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if not result.returncode == 0:
-            return "ERROR: Unable to set password for user " + user + ". Message returned: " + str(result.stdout)
+            return "ERROR: Unable to set password for user " + user + ". Message returned: " + result.stdout.decode("utf-8")
         
     return "New password set for user: " + user + "."
 
