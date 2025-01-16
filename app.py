@@ -171,10 +171,11 @@ def checkPermissions(theCurrentUser, theOtherUser):
     if not userFound:
         raise ValueError("User " + theCurrentUser + " does not have permissions for " + theOtherUser)
 
+# Helper function to split a block of plain text into lines and put <div></div> blocks around them.
 def textToHTML(theText):
     result = ""
     for textLine in theText.split("\n"):
-        result = result + "<DIV>" + textLine + "</DIV>"
+        result = result + "<div>" + textLine + "</div>"
     return result
 
 
@@ -272,7 +273,7 @@ def setPassword():
     for item in os.listdir("change-password-enabled"):
         result = subprocess.run(["change-password-enabled" + os.sep + item, user, newPassword], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if not result.returncode == 0:
-            return textToHTML("ERROR: Unable to set password for user " + user + ". Message returned:\n" + result.stdout.decode("utf-8"))
+            return textToHTML("ERROR: Unable to set password for user " + user + ".\nMessage returned:\n" + result.stdout.decode("utf-8"))
         
     return "New password set for user: " + user + "."
 
