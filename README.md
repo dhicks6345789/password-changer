@@ -88,3 +88,17 @@ Installing Password Changer will give you a Python / Flask project served by Wai
 #### Cloudflare Tunnel
 
 Password Changer was developed using Cloudflare Tunnel for handling HTTPS. Simply install the Cloudflare Tunnel client on your machine (the same one as Password Changer is on) and point it at `http://localhost:8070`.
+
+## The Password Reset Machansim
+
+When a user starts a valid password reset operation, the server-side application takes the user ID and new password given and passes them to a separate script for each place where you want to set the password. Therefore, this utility can set the same password for the same user in multiple places at the same time - say if you have both a Google Workspace domain and a Microsoft O365 domain, this utility should be able to keep both passwords in sync.
+
+### Google Workspace
+
+Ensure GAM is installed and set up.
+
+### Microsoft Entra ID
+
+Ensure the [Microsoft Entra PowerShell](https://learn.microsoft.com/en-us/powershell/entra-powershell/installation?view=entra-powershell&tabs=powershell&pivots=windows) module is installed. Note that you will probably want to use the `-Scope AllUsers` option.
+
+The PowerShell scripts included use an [access token](https://lazyadmin.nl/powershell/connect-mggraph/#access-token) for authenticating with the Microsoft Graph server. They expect to find the access token (copied from the "access token" tab of the [Microsoft Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer)) in a file named "MSGraphAccessToken.txt". That access token needs to have `User.ReadWrite.All` permissions assigned from the "Modify permissions" tab.
