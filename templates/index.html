@@ -87,6 +87,8 @@
         setPasswordButton.disabled = false;
         setPasswordButton.innerHTML = "Set Password";
         
+        document.getElementById("cancelPassword").disabled = false;
+        
         userPassword.setAttribute("type", "password");
         userPassword.value = "";
         document.getElementById("showPassword").style.display = "inline";
@@ -197,6 +199,7 @@
       }
 
       function doSetPassword() {
+        document.getElementById("cancelPassword").disabled = true;
         setPasswordButton = document.getElementById("setPassword");
         setPasswordButton.disabled = true;
         setPasswordButton.innerHTML = "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Working...";
@@ -290,7 +293,7 @@
             </div>
             <div class="row justify-content-center">
               <div class="col-6">
-                <button type="button" class="btn btn-danger" onclick="showSelectUserBlock()">Cancel</button>
+                <button id="cancelPassword" type="button" class="btn btn-danger" onclick="showSelectUserBlock()">Cancel</button>
               </div>
               <div class="col-6">
                 <button id="setPassword" type="button" class="btn btn-primary float-end" onclick="doSetPassword()">Set Password</button>
