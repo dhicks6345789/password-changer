@@ -187,6 +187,16 @@
           showSelectUserBlock();
         });
       }
+
+      function setPassword() {
+        setPasswordButton = document.getElementById("setPassword");
+        setPasswordButton.disabled = true;
+        setPasswordButton.innerHTML = "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>Working...";
+        doAPICall("setPassword", {"loginToken":loginToken, "user":document.getElementById("newPasswordUser").innerHTML, "newPassword":document.getElementById("userPassword").value}, function(theAPIResponse) {
+          showBlock("passwordSetBlock");
+          document.getElementById("passwordSetMessage").innerHTML = theAPIResponse;
+        });
+      }
       
       // The function called when the page is fully loaded and ready to display.
       function doPageLoad() {
@@ -292,7 +302,8 @@
                 <button type="button" class="btn btn-danger" onclick="showSelectUserBlock()">Cancel</button>
               </div>
               <div class="col-6">
-                <input id="setPassword" class="btn btn-primary float-end" type="submit" value="Set Password">
+                <!-- <input id="setPassword" class="btn btn-primary float-end" type="submit" value="Set Password"> -->
+                <button id="setPassword" type="button" class="btn btn-success" onclick="setPassword()">Set Password</button>
               </div>
             </div>
           </div>
