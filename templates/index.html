@@ -188,7 +188,7 @@
         });
       }
 
-      function setPassword() {
+      function doSetPassword() {
         setPasswordButton = document.getElementById("setPassword");
         setPasswordButton.disabled = true;
         setPasswordButton.innerHTML = "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>Working...";
@@ -304,7 +304,7 @@
               </div>
               <div class="col-6">
                 <!-- <input id="setPassword" class="btn btn-primary float-end" type="submit" value="Set Password"> -->
-                <button id="setPassword" type="button" class="btn btn-success" onclick="setPassword()">Set Password</button>
+                <button id="setPassword" type="button" class="btn btn-success" onclick="doSetPassword()">Set Password</button>
               </div>
             </div>
           </div>
