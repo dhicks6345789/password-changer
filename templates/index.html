@@ -207,6 +207,9 @@
         } else {
           document.getElementById("setPasswordForm").addEventListener('submit', function(event) {
             event.preventDefault();
+            setPasswordButton = document.getElementById("setPassword");
+            setPasswordButton.disabled = true;
+            setPasswordButton.value = "Working...";
             doAPICall("setPassword", {"loginToken":loginToken, "user":document.getElementById("newPasswordUser").innerHTML, "newPassword":document.getElementById("userPassword").value}, function(theAPIResponse) {
               showBlock("passwordSetBlock");
               document.getElementById("passwordSetMessage").innerHTML = theAPIResponse;
