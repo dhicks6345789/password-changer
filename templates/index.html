@@ -207,9 +207,16 @@
         } else {
           document.getElementById("setPasswordForm").addEventListener('submit', function(event) {
             event.preventDefault();
+
+            // <input id="setPassword" class="btn btn-primary float-end" type="submit" value="Set Password">
             setPasswordButton = document.getElementById("setPassword");
             setPasswordButton.disabled = true;
             setPasswordButton.value = "Working...";
+            setPasswordButton.innerHTML = "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>"
+            //<button class="btn btn-primary" type="button" disabled>
+            //<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            //Loading...
+            //</button>
             doAPICall("setPassword", {"loginToken":loginToken, "user":document.getElementById("newPasswordUser").innerHTML, "newPassword":document.getElementById("userPassword").value}, function(theAPIResponse) {
               showBlock("passwordSetBlock");
               document.getElementById("passwordSetMessage").innerHTML = theAPIResponse;
