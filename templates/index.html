@@ -80,6 +80,11 @@
       // Make the "changePassword" user interface block visitable, hide other blocks.
       function showChangePasswordBlock(theUserEmail) {
         showBlock("changePasswordBlock");
+        
+        setPasswordButton = document.getElementById("setPassword");
+        setPasswordButton.disabled = false;
+        setPasswordButton.innerHTML = "Set Password";
+        
         userPassword.setAttribute("type", "password");
         userPassword.value = "";
         document.getElementById("showPassword").style.display = "inline";
@@ -98,6 +103,7 @@
 
       // If this user can change password for some other users, show the "selectUser" block, otherwise just show the "changePassword" block.
       function showSelectUserBlock() {
+        document.getElementById("userName").value = "";
         doAPICall("getAdditionalUsers", {"loginToken":loginToken}, function(theAPIResponse) {
           userList = JSON.parse(theAPIResponse);
           if (userList == []) {
