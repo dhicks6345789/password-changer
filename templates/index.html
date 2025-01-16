@@ -223,6 +223,7 @@
       <div id="errorMessageBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
         <h1>ERROR:</h1>
         <h2 id="errorMessageText"></h2>
+        <button id="errorMessageOkay" type="button" class="btn btn-success float-end" onclick="showSelectUserBlock()">Okay</button>
       </div>
       <div id="googleLoginBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:flex;">
         <h1>{{ appData['name'] }}</h1>
@@ -284,7 +285,6 @@
                 <button type="button" class="btn btn-danger" onclick="showSelectUserBlock()">Cancel</button>
               </div>
               <div class="col-6">
-                <!-- <input id="setPassword" class="btn btn-primary float-end" type="submit" value="Set Password"> -->
                 <button id="setPassword" type="button" class="btn btn-primary float-end" onclick="doSetPassword()">Set Password</button>
               </div>
             </div>
