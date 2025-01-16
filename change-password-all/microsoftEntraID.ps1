@@ -6,7 +6,7 @@ echo $accessToken
 $secureAccessToken = ConvertTo-SecureString $accessToken -AsPlainText -Force
 
 #Connect-Entra -Scopes 'User.ReadWrite.All'
-Connect-MgGraph -AccessToken $secureAccessToken -Scopes 'User.ReadWrite.All'
+Connect-MgGraph -AccessToken $secureAccessToken
 
 Set-EntraUserPassword -UserId $UserID -Password $securePassword
 exit 1
