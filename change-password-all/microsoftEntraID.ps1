@@ -8,11 +8,6 @@ Connect-MgGraph -ClientId $clientID -TenantId $tenantID -CertificateThumbprint $
 
 Set-EntraUserPassword -UserId $UserID -Password $securePassword
 
-if ($?) {
-   echo "command succeeded"
-}
-else {
-   echo "command failed"
-}
+echo $error
 
 exit 1
