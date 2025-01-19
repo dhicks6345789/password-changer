@@ -10,6 +10,6 @@ Set-EntraUserPassword -UserId $UserID -Password $securePassword -ErrorAction Sil
 
 echo "Bananas!"
 
-echo $error
+echo $error.Status
 
 exit 1
