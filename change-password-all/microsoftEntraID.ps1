@@ -6,12 +6,13 @@ $clientID = Get-Content .\MSGraphClientID.txt -Raw
 $certificateThumbprint = Get-Content .\MSGraphCertificateThumbprint.txt -Raw
 Connect-MgGraph -ClientId $clientID -TenantId $tenantID -CertificateThumbprint $certificateThumbprint -NoWelcome
 
-try {
-  Set-EntraUserPassword -UserId $UserID -Password $securePassword
-} catch {
-  echo "Bananas!"
-}
+Set-EntraUserPassword -UserId $UserID -Password $securePassword
 
-#} catch [Request_ResourceNotFound] {
+if ($?) {
+   echo "command succeeded"
+}
+else {
+   echo "command failed"
+}
 
 exit 1
