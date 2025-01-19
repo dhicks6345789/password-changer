@@ -7,8 +7,8 @@ $securePassword = ConvertTo-SecureString $Password -AsPlainText -Force
 #Connect-Entra -Scopes 'User.ReadWrite.All'
 #Connect-MgGraph -AccessToken $secureAccessToken -NoWelcome
 
-$clientID = Get-Content .\clidID.txt -Raw
-$tenantID = Get-Content .\tenantID.txt -Raw
+$clientID = Get-Content .\MSGraphClientID.txt -Raw
+$tenantID = Get-Content .\MSGraphTenantID.txt -Raw
 Connect-MgGraph -ClientId $clientID -TenantId $tenantID
 
 Set-EntraUserPassword -UserId $UserID -Password $securePassword
