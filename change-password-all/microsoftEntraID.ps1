@@ -8,6 +8,8 @@ Connect-MgGraph -ClientId $clientID -TenantId $tenantID -CertificateThumbprint $
 
 Set-EntraUserPassword -UserId $UserID -Password $securePassword -ErrorAction SilentlyContinue
 
+echo "Bananas!"
+
 echo $error
 
 exit 1
