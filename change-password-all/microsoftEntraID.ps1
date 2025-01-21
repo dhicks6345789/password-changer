@@ -6,7 +6,10 @@ $clientID = Get-Content .\MSGraphClientID.txt -Raw
 $certificateThumbprint = Get-Content .\MSGraphCertificateThumbprint.txt -Raw
 Connect-MgGraph -ClientId $clientID -TenantId $tenantID -CertificateThumbprint $certificateThumbprint -NoWelcome
 
-#Set-EntraUserPassword -UserId $UserID -Password $securePassword -ErrorAction SilentlyContinue -ErrorVariable setPasswordError
+Set-EntraUserPassword -UserId $UserID -Password $securePassword -ErrorAction SilentlyContinue
+if (#? -eq $false) {
+  echo "Error setting password"
+}
 
 #echo $error.Status
 
