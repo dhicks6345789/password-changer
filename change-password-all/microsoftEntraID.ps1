@@ -8,12 +8,12 @@ Connect-MgGraph -ClientId $clientID -TenantId $tenantID -CertificateThumbprint $
 
 Set-EntraUserPassword -UserId $UserID -Password $securePassword -ErrorAction SilentlyContinue
 if ($? -eq $false) {
-  echo "Error setting password - trying to create user first.
+  echo "Error setting password - trying to create user first."
   $PasswordProfile = @{
     Password = $Password
   }
-  # DisplayName = 'John Smith'
-  $MailNickName = $UserID.Split('@')[0]
+  #DisplayName = "John Smith"
+  $MailNickName = $UserID.Split("@")[0]
   New-MgUser -DisplayName $MailNickName -PasswordProfile $PasswordProfile -AccountEnabled -MailNickName $MailNickName -UserPrincipalName $UserID
 }
 
