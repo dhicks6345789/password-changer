@@ -15,6 +15,8 @@ if ($? -eq $false) {
   #DisplayName = "John Smith"
   $MailNickName = $UserID.Split("@")[0]
   New-MgUser -DisplayName $MailNickName -PasswordProfile $PasswordProfile -AccountEnabled -MailNickName $MailNickName -UserPrincipalName $UserID
+  if ($? -eq $false) {
+    echo "Error creating Entra ID user: $UserID."
+    exit 1
+  }
 }
-
-exit 1
