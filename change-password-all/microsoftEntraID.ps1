@@ -14,7 +14,7 @@ if ($? -eq $false) {
   }
   #DisplayName = "John Smith"
   $MailNickName = $UserID -split "@", 1
-  #New-MgUser -DisplayName $DisplayName -PasswordProfile $PasswordProfile -AccountEnabled -MailNickName $MailNickName -UserPrincipalName $UserID
+  New-MgUser -DisplayName $MailNickName -PasswordProfile $PasswordProfile -AccountEnabled -MailNickName $MailNickName -UserPrincipalName $UserID
 }
 
 exit 1
