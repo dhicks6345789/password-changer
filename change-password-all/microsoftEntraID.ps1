@@ -13,7 +13,7 @@ if ($? -eq $false) {
     Password = $Password
   }
   #DisplayName = "John Smith"
-  $MailNickName = $UserID -split "@", 1
+  $MailNickName = $UserID.Split("@")[0]
   New-MgUser -DisplayName $MailNickName -PasswordProfile $PasswordProfile -AccountEnabled -MailNickName $MailNickName -UserPrincipalName $UserID
 }
 
