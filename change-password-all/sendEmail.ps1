@@ -1,5 +1,6 @@
 param ([string]$UserID, [string]$Password)
 
-gam sendemail destination@email.com from useralias@domain.com mailbox user@domain.com subject "test subject" message "text body" ...
+$destinationEmailAddress = Get-Content .\NotificationsToEmailAddress.txt -Raw
+$fromEmailAddress = Get-Content .\NotificationsFromEmailAddress.txt -Raw
 
-Connect-MgGraph -ClientId $clientID -TenantId $tenantID -CertificateThumbprint $certificateThumbprint -NoWelcome
+gam sendemail $destinationEmailAddress from $fromEmailAddress mailbox $fromEmailAddress subject "User $UserID: Password Change" message "User $UserID has had their password changed by the password changer utility."
