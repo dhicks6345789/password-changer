@@ -13,8 +13,8 @@ if ($? -eq $false) {
     Password = $Password
   }
   #DisplayName = "John Smith"
-  #MailNickName = left of @
-  #New-MgUser -DisplayName $UserID -PasswordProfile $PasswordProfile -AccountEnabled -MailNickName $UserID -UserPrincipalName $UserID
+  $MailNickName = $UserID -split "@", 1
+  #New-MgUser -DisplayName $DisplayName -PasswordProfile $PasswordProfile -AccountEnabled -MailNickName $MailNickName -UserPrincipalName $UserID
 }
 
 exit 1
