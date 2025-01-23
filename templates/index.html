@@ -115,6 +115,8 @@
           defaultPassword = theAPIResponse;
           validatePassword();
         });
+
+        document.getElementById("userPassword").focus();
       }
 
       // If this user can change password for some other users, show the "selectUser" block, otherwise just show the "changePassword" block.
