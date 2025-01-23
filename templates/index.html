@@ -144,6 +144,12 @@
         confirmPasswordValue = document.getElementById("confirmPassword").value;
         errorMessage = document.getElementById("errorMessage");
         document.getElementById("setPassword").disabled = true;
+        errorMessage.innerHTML = "";
+
+        if (confirmPasswordValue == "") {
+          return
+        }
+        
         if (userPasswordValue.length < 4) {
           errorMessage.innerHTML = "Password length too short.";
         } else if (userPasswordValue != confirmPasswordValue) {
@@ -151,7 +157,6 @@
         } else if (commonPasswords.includes(userPasswordValue.toLowerCase())) {
           errorMessage.innerHTML = "Password \"" + userPasswordValue + "\" is too common.";
         } else {
-          errorMessage.innerHTML = "";
           document.getElementById("setPassword").disabled = false;
         }
       }
@@ -331,8 +336,9 @@
               <div class="col-2">
                 <button id="cancelPassword" type="button" class="btn btn-danger" onclick="showSelectUserBlock()">Cancel</button>
               </div>
-              <div class="col-8 text-center">
-                <button id="errorMessage" type="button" class="btn btn-outline-danger border border-0" disabled"></button>
+              <div class="col-8 text-center align-items-center justify-content-center">
+                <!-- <button id="errorMessage" type="button" class="btn btn-outline-danger border border-0" disabled"></button> -->
+                <div id="errorMessage" class="text-danger">Error!</div>
               </div>
               <div class="col-2">
                 <button id="setPassword" type="button" class="btn btn-primary float-end" onclick="doSetPassword()">Set Password</button>
