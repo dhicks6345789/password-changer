@@ -236,11 +236,11 @@
       }
       
       function checkForEnter(theElement) {
-        if(event.key === 'Enter') {
-          if theElement.id == "userPassword" {
+        if (event.key === "Enter") {
+          if (theElement.id == "userPassword") {
             document.getElementById("confirmPassword").focus();
           }
-          if theElement.id == "confirmPassword" {
+          if (theElement.id == "confirmPassword") {
             validatePassword();
             if (document.getElementById("setPassword").disabled == false) {
               doSetPassword();
