@@ -237,7 +237,7 @@
       
       function checkForEnter(theElement) {
         if(event.key === 'Enter') {
-          alert(theElement.value);
+          console.log(theElement.id);
         }
       }
       
@@ -343,7 +343,7 @@
               <div class="col-12">
                 <div class="input-group mb-3">
                   <button class="btn btn-outline-secondary border border-0 text-body" disabled>&nbsp;&nbsp;&nbsp;Confirm:</button>
-                  <input id="confirmPassword" type="password" tabindex="2" class="form-control" oninput="validatePassword()">
+                  <input id="confirmPassword" type="password" tabindex="2" class="form-control" oninput="validatePassword()" onkeydown="checkForEnter(this)">
                   <button id="blankPassword" type="button" class="btn btn-outline-secondary border border-0" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"/>
                   </button>
