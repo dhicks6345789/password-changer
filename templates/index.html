@@ -32,6 +32,9 @@
       
       // The default password for the user who's password is to be changed.
       var defaultPassword = ""
+
+      // A list of common passwords - we reject any password that is too common.
+      var commonPasswords = ["123456", "123456789", "qwerty", "password", "1111111", "12345678", "abc123", "1234567", "password1", "12345", "1234567890", "123123", "000000", "iloveyou", "1234", "1q2w3e4r5t", "qwertyuiop", "123", "monkey", "dragon"];
       
       // A function to do an api call to the server.
       function doAPICall(theMethod, theParams, theSuccessFunction, callMethod="POST") {
@@ -145,6 +148,8 @@
           errorMessage.innerHTML = "Password length too short."
         } else if (userPasswordValue != confirmPasswordValue) {
           errorMessage.innerHTML = "Password input fields do not match."
+        } else if (commonPasswords.includes(userPasswordValue)) {
+          errorMessage.innerHTML = "Password \"" + userPasswordValue + "\" is too common."
         } else {
           document.getElementById("setPassword").disabled = false;
         }
