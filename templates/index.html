@@ -316,8 +316,8 @@
               <div class="col-12">
                 <div class="input-group mb-3">
                   <button class="btn btn-outline-secondary border border-0 text-body" disabled>Password:</button>
-                  <input id="userPassword" type="password" tabindex="0" class="form-control" oninput="validatePassword()">
-                  <button id="hidePassword" type="button" tabindex="3" class="btn btn-outline-secondary" onclick="togglePassword()" style="display:none;">
+                  <input id="userPassword" type="password" tabindex="1" class="form-control" oninput="validatePassword()">
+                  <button id="hidePassword" type="button" tabindex="4" class="btn btn-outline-secondary" onclick="togglePassword()" style="display:none;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
                       <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"/>
                       <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"/>
@@ -337,7 +337,7 @@
               <div class="col-12">
                 <div class="input-group mb-3">
                   <button class="btn btn-outline-secondary border border-0 text-body" disabled>&nbsp;&nbsp;&nbsp;Confirm:</button>
-                  <input id="confirmPassword" type="password" tabindex="1" class="form-control" oninput="validatePassword()">
+                  <input id="confirmPassword" type="password" tabindex="2" class="form-control" oninput="validatePassword()">
                   <button id="blankPassword" type="button" class="btn btn-outline-secondary border border-0" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"/>
                   </button>
@@ -346,14 +346,14 @@
             </div>
             <div class="row justify-content-center align-middle">
               <div class="col-2">
-                <button id="cancelPassword" type="button" class="btn btn-danger" onclick="showSelectUserBlock()">Cancel</button>
+                <button id="cancelPassword" type="button" tabindex="5" class="btn btn-danger" onclick="showSelectUserBlock()">Cancel</button>
               </div>
               <div class="col-8 text-center align-items-center justify-content-center align-middle">
                 <!-- <button id="errorMessage" type="button" class="btn btn-outline-danger border border-0" disabled"></button> -->
                 <div id="errorMessage" class="text-danger align-middle">Error!</div>
               </div>
               <div class="col-2">
-                <button id="setPassword" type="button" tabindex="2" class="btn btn-primary float-end" onclick="doSetPassword()">Set Password</button>
+                <button id="setPassword" type="button" tabindex="3" class="btn btn-primary float-end" onclick="doSetPassword()">Set Password</button>
               </div>
             </div>
           </div>
