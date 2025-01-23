@@ -138,7 +138,7 @@
       // Checks the password to be set is valid, disables the "Set Password" button if not.
       function validatePassword() {
         userPasswordValue = document.getElementById("userPassword").value;
-        confirmPasswordValue = document.getElementById("userPassword").value;
+        confirmPasswordValue = document.getElementById("confirmPassword").value;
         if (userPasswordValue.length > 3 && userPasswordValue == confirmPasswordValue) {
           document.getElementById("setPassword").disabled = false;
         } else {
@@ -310,7 +310,7 @@
               <div class="col-12">
                 <div class="input-group mb-3">
                   <button class="btn btn-outline-secondary border border-0 text-body" disabled>&nbsp;&nbsp;&nbsp;Confirm:</button>
-                  <input id="confirmPassword" type="password" class="form-control" oninput="validatePassword(">
+                  <input id="confirmPassword" type="password" class="form-control" oninput="validatePassword()">
                   <button id="blankPassword" type="button" class="btn btn-outline-secondary border border-0" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"/>
                   </button>
