@@ -237,7 +237,15 @@
       
       function checkForEnter(theElement) {
         if(event.key === 'Enter') {
-          console.log(theElement.id);
+          if theElement.id == "userPassword" {
+            document.getElementById("confirmPassword").focus();
+          }
+          if theElement.id == "confirmPassword" {
+            validatePassword();
+            if (document.getElementById("setPassword").disabled == false) {
+              doSetPassword();
+            }
+          }
         }
       }
       
