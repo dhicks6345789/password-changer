@@ -286,7 +286,6 @@
         // Check for "escape" being pressed when the changePasswordBlock is displayed.
         window.addEventListener("keydown", function checkForEscape() {
           if (document.getElementById("changePasswordBlock").style.display == "flex" && event.key === "Escape") {
-            console.log("Escape!");
             showSelectUserBlock();
           }
         });
