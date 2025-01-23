@@ -145,12 +145,13 @@
         errorMessage = document.getElementById("errorMessage");
         document.getElementById("setPassword").disabled = true;
         if (userPasswordValue.length < 4) {
-          errorMessage.innerHTML = "Password length too short."
+          errorMessage.innerHTML = "Password length too short.";
         } else if (userPasswordValue != confirmPasswordValue) {
-          errorMessage.innerHTML = "Password input fields do not match."
-        } else if (commonPasswords.toLowerCase().includes(userPasswordValue)) {
-          errorMessage.innerHTML = "Password \"" + userPasswordValue + "\" is too common."
+          errorMessage.innerHTML = "Password input fields do not match.";
+        } else if (commonPasswords.includes(userPasswordValue.toLowerCase())) {
+          errorMessage.innerHTML = "Password \"" + userPasswordValue + "\" is too common.";
         } else {
+          errorMessage.innerHTML = "";
           document.getElementById("setPassword").disabled = false;
         }
       }
