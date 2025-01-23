@@ -42,7 +42,7 @@
         apiCall.onerror = function(theError) {
           console.log("An error occured!");
           console.log(theError);
-        });
+        }
         apiCall.onreadystatechange = function() {
           if (apiCall.readyState == 4 && apiCall.status == 200) {
             if (apiCall.responseText.startsWith("ERROR:")) {
