@@ -234,15 +234,7 @@
           showSelectUserBlock();
         });
       }
-
-      // Check for "escape" being pressed when the changePasswordBlock is displayed.
-      function checkForEscape()
-      {
-        if (event.key === "Escape") {
-          showSelectUserBlock();
-        }
-      }
-
+      
       // Check for "enter" being pressed when the focus is on either of the password / confirm text inputs.
       function checkForEnter(theElement) {
         if (event.key === "Enter") {
@@ -290,8 +282,14 @@
         if (configError != "") {
           showErrorMessage(configError);
         }
-        
-        window.addEventListener("keydown", checkForEscape);
+
+        // Check for "escape" being pressed when the changePasswordBlock is displayed.
+        window.addEventListener("keydown", function checkForEscape() {
+          if (document.getElementById("changePasswordBlock").style.display == "flex" && event.key === "Escape") {
+            console.log("Escape!");
+            showSelectUserBlock();
+          }
+        });
       }
     </script>
   </head>
