@@ -91,6 +91,10 @@
         setPasswordButton.innerHTML = "Set Password";
         
         document.getElementById("cancelPassword").disabled = false;
+        document.getElementById("showDefaultPasswordButton").disabled = false;
+        document.getElementById("generateNewPasswordButton").disabled = false;
+        document.getElementById("userPassword").disabled = false;
+        document.getElementById("confirmPassword").disabled = false;
 
         userPassword = document.getElementById("userPassword");
         userPassword.setAttribute("type", "password");
@@ -229,6 +233,10 @@
 
       function doSetPassword() {
         document.getElementById("cancelPassword").disabled = true;
+        document.getElementById("showDefaultPasswordButton").disabled = true;
+        document.getElementById("generateNewPasswordButton").disabled = true;
+        document.getElementById("userPassword").disabled = true;
+        document.getElementById("confirmPassword").disabled = true;
         setPasswordButton = document.getElementById("setPassword");
         setPasswordButton.disabled = true;
         setPasswordButton.innerHTML = "<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Working...";
@@ -295,7 +303,7 @@
               </div>
               <div class="col-2"></div>
               <div class="col-3">
-                <button type="button" class="btn btn-success" onclick="generateNewPassword()">Generate New Password</button>
+                <button id="generateNewPasswordButton" type="button" class="btn btn-success" onclick="generateNewPassword()">Generate New Password</button>
               </div>
               <div class="col-2"></div>
             </div>
