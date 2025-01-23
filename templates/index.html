@@ -290,6 +290,8 @@
         if (configError != "") {
           showErrorMessage(configError);
         }
+        
+        window.addEventListener("keydown", checkForEscape);
       }
     </script>
   </head>
@@ -315,7 +317,7 @@
         <div id="userList" style="max-width:25vw; max-height:40vh; overflow-x:hidden; overflow-y:auto;">
         </div>
       </div>
-      <div id="changePasswordBlock" onkeydown="checkForEscape()" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
+      <div id="changePasswordBlock" class="flex-column align-items-center justify-content-center" style="height:100vh; display:none;">
         <form id="setPasswordForm">
           <div class="container">
             <div class="row justify-content-center">
@@ -334,7 +336,6 @@
               </div>
               <div class="col-2"></div>
             </div>
-            <!-- <p></p> -->
             <div class="row justify-content-center">
               <div class="col-12">
                 <div class="input-group mb-3">
