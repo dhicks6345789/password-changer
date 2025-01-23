@@ -94,14 +94,9 @@
         document.getElementById("showPassword").style.display = "inline";
         document.getElementById("hidePassword").style.display = "none";
         document.getElementById("newPasswordUser").innerHTML = theUserEmail;
-        validatePassword();
         doAPICall("getDefaultPassword", {"loginToken":loginToken, "user":theUserEmail}, function(theAPIResponse) {
-          if (theAPIResponse == "") {
-            document.getElementById("showDefaultPasswordButton").disabled = true;
-          } else {
-            defaultPassword = theAPIResponse;
-            document.getElementById("showDefaultPasswordButton").disabled = false;
-          }
+          defaultPassword = theAPIResponse;
+          validatePassword();
         });
       }
 
@@ -137,7 +132,8 @@
       // Checks the password to be set is valid, disables the "Set Password" button if not.
       function validatePassword() {
         userPasswordValue = document.getElementById("userPassword").value;
-        if (userPasswordValue.length > 3) {
+        confirmPasswordValue = document.getElementById("userPassword").value;
+        if (userPasswordValue.length > 3 && userPasswordValue == confirmPasswordValue) {
           document.getElementById("setPassword").disabled = false;
         } else {
           document.getElementById("setPassword").disabled = true;
@@ -146,13 +142,14 @@
       
       // Toggles the visibility of the "userPassword" password input.
       function togglePassword() {
-        userPassword = document.getElementById("userPassword");
         if (userPassword.getAttribute("type") == "password") {
-          userPassword.setAttribute("type", "text");
+          document.getElementById("userPassword").setAttribute("type", "text");
+          document.getElementById("confirmPassword").setAttribute("type", "text");
           document.getElementById("showPassword").style.display = "none";
           document.getElementById("hidePassword").style.display = "inline";
         } else {
-          userPassword.setAttribute("type", "password");
+          document.getElementById("userPassword").setAttribute("type", "password");
+          document.getElementById("confirmPassword").setAttribute("type", "password");
           document.getElementById("showPassword").style.display = "inline";
           document.getElementById("hidePassword").style.display = "none";
         }
@@ -163,6 +160,11 @@
         userPassword = document.getElementById("userPassword");
         userPassword.setAttribute("type", "text");
         userPassword.value = defaultPassword;
+
+        confirmPassword = document.getElementById("confirmPassword");
+        confirmPassword.setAttribute("type", "text");
+        confirmPassword.value = defaultPassword;
+        
         document.getElementById("showPassword").style.display = "none";
         document.getElementById("hidePassword").style.display = "inline";
         validatePassword();
