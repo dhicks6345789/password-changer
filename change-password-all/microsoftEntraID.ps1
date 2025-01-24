@@ -8,7 +8,7 @@ Connect-MgGraph -ClientId $clientID -TenantId $tenantID -CertificateThumbprint $
 
 # Set-EntraUserPassword -UserId $UserID -Password $securePassword -ErrorAction SilentlyContinue
 Try {
-  Set-EntraUserPassword -UserId $UserID -Password $securePassword
+  Set-EntraUserPassword -UserId $UserID -Password $securePassword -ErrorAction Stop
 } Catch [Exception] {
   echo "An Exception was caught!"
 }
