@@ -7,7 +7,11 @@ $certificateThumbprint = Get-Content .\MSGraphCertificateThumbprint.txt -Raw
 Connect-MgGraph -ClientId $clientID -TenantId $tenantID -CertificateThumbprint $certificateThumbprint -NoWelcome
 
 # Set-EntraUserPassword -UserId $UserID -Password $securePassword -ErrorAction SilentlyContinue
-Set-EntraUserPassword -UserId $UserID -Password $securePassword
+Try {
+  Set-EntraUserPassword -UserId $UserID -Password $securePassword
+} Catch [Exception] {
+  echo "An Exception was caught!"
+}
 echo "Error state:"
 echo $?
 if ($? -eq $false) {
