@@ -8,6 +8,8 @@ Connect-MgGraph -ClientId $clientID -TenantId $tenantID -CertificateThumbprint $
 
 # Set-EntraUserPassword -UserId $UserID -Password $securePassword -ErrorAction SilentlyContinue
 Set-EntraUserPassword -UserId $UserID -Password $securePassword
+echo "Error state:"
+echo $?
 if ($? -eq $false) {
   echo "Error setting password - trying to create user first."
   $PasswordProfile = @{
